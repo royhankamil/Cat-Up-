@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -44,8 +46,32 @@ public class Player : MonoBehaviour
 
         if (jumpPressed && isGrounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f); // Reset vertical velocity before jump
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             jumpPressed = false;
+        }
+
+        // Better jump physics
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.gravityScale = fallMultiplier;
+        }
+        else if (rb.linearVelocity.y > 0 && !jumpPressed)
+        {
+            rb.gravityScale = lowJumpMultiplier;
+        }
+        else
+        {
+            rb.gravityScale = 1f;
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
 }
