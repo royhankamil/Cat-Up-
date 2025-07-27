@@ -23,18 +23,22 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
+        if (GameManager.IsPlay)
+            moveInput = context.ReadValue<Vector2>();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (GameManager.IsPlay)
         {
-            jumpPressed = true;
-        }
-        else if (context.canceled)
-        {
-            jumpPressed = false;
+            if (context.performed)
+            {
+                jumpPressed = true;
+            }
+            else if (context.canceled)
+            {
+                jumpPressed = false;
+            }
         }
     }
 

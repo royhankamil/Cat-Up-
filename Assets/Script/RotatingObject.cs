@@ -7,6 +7,8 @@ public class RotatingObject : MonoBehaviour
     public InputActionReference mouseClickAction;
     public InputActionReference rotateLeftAction;
     public InputActionReference rotateRightAction;
+    public InputActionReference scrollAction;
+    public float scrollRotationSpeed = 300f;
 
     private bool isDragging = false;
     private Vector3 offset;
@@ -17,6 +19,7 @@ public class RotatingObject : MonoBehaviour
         mouseClickAction.action.Enable();
         rotateLeftAction.action.Enable();
         rotateRightAction.action.Enable();
+        if (scrollAction != null) scrollAction.action.Enable();
         Debug.Log("Input actions enabled!");
     }
 
@@ -26,6 +29,7 @@ public class RotatingObject : MonoBehaviour
         mouseClickAction.action.Disable();
         rotateLeftAction.action.Disable();
         rotateRightAction.action.Disable();
+        if (scrollAction != null) scrollAction.action.Disable();
     }
 
     void Update()
@@ -60,7 +64,7 @@ public class RotatingObject : MonoBehaviour
         {
             transform.position = mouseWorldPos2D + (Vector2)offset;
 
-            // Rotation
+            // Rotation with arrow keys
             if (rotateRightAction.action.IsPressed())
             {
                 transform.Rotate(Vector3.forward, -100f * Time.deltaTime); // 2D rotation
@@ -68,6 +72,15 @@ public class RotatingObject : MonoBehaviour
             if (rotateLeftAction.action.IsPressed())
             {
                 transform.Rotate(Vector3.forward, 100f * Time.deltaTime); // 2D rotation
+            }
+        }
+        // Rotation with mouse scroll (always active)
+        if (scrollAction != null)
+        {
+            float scrollValue = scrollAction.action.ReadValue<Vector2>().y;
+            if (Mathf.Abs(scrollValue) > 0.01f)
+            {
+                transform.Rotate(Vector3.forward, -scrollValue * scrollRotationSpeed * Time.deltaTime);
             }
         }
         Debug.DrawLine(mouseWorldPos2D, mouseWorldPos2D + Vector2.up * 0.5f, Color.red, 0.1f);
