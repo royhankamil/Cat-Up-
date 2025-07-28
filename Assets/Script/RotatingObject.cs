@@ -36,7 +36,7 @@ public class RotatingObject : MonoBehaviour
     {
         if (GameManager.IsPlay)
             return; 
-            
+
         Vector3 mouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 0f));
         Vector2 mouseWorldPos2D = new Vector2(mouseWorldPos.x, mouseWorldPos.y);
@@ -76,14 +76,15 @@ public class RotatingObject : MonoBehaviour
             {
                 transform.Rotate(Vector3.forward, 100f * Time.deltaTime); // 2D rotation
             }
-        }
-        // Rotation with mouse scroll (always active)
-        if (scrollAction != null)
-        {
-            float scrollValue = scrollAction.action.ReadValue<Vector2>().y;
-            if (Mathf.Abs(scrollValue) > 0.01f)
+            
+            // Rotation with mouse scroll (always active)
+            if (scrollAction != null)
             {
-                transform.Rotate(Vector3.forward, -scrollValue * scrollRotationSpeed * Time.deltaTime);
+                float scrollValue = scrollAction.action.ReadValue<Vector2>().y;
+                if (Mathf.Abs(scrollValue) > 0.01f)
+                {
+                    transform.Rotate(Vector3.forward, -scrollValue * scrollRotationSpeed * Time.deltaTime);
+                }
             }
         }
         Debug.DrawLine(mouseWorldPos2D, mouseWorldPos2D + Vector2.up * 0.5f, Color.red, 0.1f);

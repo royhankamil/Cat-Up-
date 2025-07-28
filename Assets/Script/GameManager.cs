@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,16 +23,23 @@ public class GameManager : MonoBehaviour
     {
         IsPlay = !IsPlay;
         playText.text = IsPlay ? "Reset" : "Play";
-
-        rigidbodies = GameObject.FindGameObjectsWithTag("Object").Select(obj => obj.GetComponent<Rigidbody2D>()).ToList();
-
-        foreach (var rb in rigidbodies)
+        if (!IsPlay)
         {
-            if (rb != null)
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            rigidbodies = GameObject.FindGameObjectsWithTag("Object").Select(obj => obj.GetComponent<Rigidbody2D>()).ToList();
+
+            foreach (var rb in rigidbodies)
             {
-                rb.bodyType = RigidbodyType2D.Dynamic;
+                if (rb != null)
+                {
+                    rb.bodyType = RigidbodyType2D.Dynamic;
+                }
             }
         }
+
 
         // if (IsPlay)
         // {
