@@ -34,6 +34,9 @@ public class RotatingObject : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.IsPlay)
+            return; 
+            
         Vector3 mouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 0f));
         Vector2 mouseWorldPos2D = new Vector2(mouseWorldPos.x, mouseWorldPos.y);

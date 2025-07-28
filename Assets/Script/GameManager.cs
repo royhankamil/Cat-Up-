@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -5,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static bool IsPlay { get; private set; } = false;
     [SerializeField] private TextMeshProUGUI playText;
+    private List<Rigidbody2D> rigidbodies = new List<Rigidbody2D>();
     void Start()
     {
 
@@ -20,6 +23,16 @@ public class GameManager : MonoBehaviour
         IsPlay = !IsPlay;
         playText.text = IsPlay ? "Reset" : "Play";
 
+        rigidbodies = GameObject.FindGameObjectsWithTag("Object").Select(obj => obj.GetComponent<Rigidbody2D>()).ToList();
+
+        foreach (var rb in rigidbodies)
+        {
+            if (rb != null)
+            {
+                rb.bodyType = RigidbodyType2D.Dynamic;
+            }
+        }
+
         // if (IsPlay)
         // {
         //     Time.timeScale = 0f;
@@ -28,7 +41,7 @@ public class GameManager : MonoBehaviour
         // {
         //     Time.timeScale = 1f;
         // }
-        
+
     }
     
 }
