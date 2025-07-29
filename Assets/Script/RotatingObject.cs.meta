@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 88cb41719b5038845bc639af31e27855
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mousePositionAction: {fileID: -1654692200621890270, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - mouseClickAction: {fileID: 3001919216989983466, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - rotateLeftAction: {fileID: -980147981375395284, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - rotateRightAction: {fileID: 2694197372498568143, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - scrollAction: {fileID: 6240969308177333660, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
