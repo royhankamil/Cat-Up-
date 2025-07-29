@@ -14,8 +14,8 @@ TagManager:
   - Water
   - UI
   - Item
-  - 
-  - 
+  - G_L1
+  - G_L2
   - 
   - 
   - 
@@ -48,6 +48,27 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 3561607899
+    locked: 0
+  - name: L7
+    uniqueID: 3279958939
+    locked: 0
+  - name: L6
+    uniqueID: 1941973537
+    locked: 0
+  - name: L5
+    uniqueID: 607141281
+    locked: 0
+  - name: L4
+    uniqueID: 559579779
+    locked: 0
+  - name: L3
+    uniqueID: 2687897615
+    locked: 0
+  - name: L2
+    uniqueID: 1265660727
+    locked: 0
+  - name: L1
+    uniqueID: 2422665727
     locked: 0
   m_RenderingLayers:
   - Default
