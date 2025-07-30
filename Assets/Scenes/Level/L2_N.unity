@@ -5894,11 +5894,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.36437082, y: 7.194304}
-      - {x: -10.759019, y: 7.1655087}
+    - - {x: -0.36437082, y: 11.1943035}
+      - {x: -10.759019, y: 11.165508}
       - {x: -10.77441, y: -4.41563}
       - {x: 9.442196, y: -4.3548183}
-      - {x: 9.487617, y: 7.256324}
+      - {x: 9.487617, y: 11.256324}
   m_UseDelaunayMesh: 0
 --- !u!4 &870448420
 Transform:
@@ -5909,7 +5909,7 @@ Transform:
   m_GameObject: {fileID: 870448418}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39726, y: 0.05215, z: 0}
+  m_LocalPosition: {x: 0.39726, y: 0.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9144,6 +9144,52 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1353541558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1353541559}
+  - component: {fileID: 1353541560}
+  m_Layer: 0
+  m_Name: FollowCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1353541559
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353541558}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4664, y: -2.53, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1353541560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353541558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4330c01a7da994595e5d629dfc95aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 112810086}
+  yOffset: 2
 --- !u!1 &1357021777
 GameObject:
   m_ObjectHideFlags: 0
@@ -11750,7 +11796,7 @@ MonoBehaviour:
   TargetOffset: {x: 0, y: 0, z: 0}
   Damping: {x: 5, y: 5, z: 5}
   Lookahead:
-    Enabled: 1
+    Enabled: 0
     Time: 0.805
     Smoothing: 2.3
     IgnoreY: 0
@@ -11774,12 +11820,12 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 112810086}
+    TrackingTarget: {fileID: 1353541559}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60
-    OrthographicSize: 5
+    OrthographicSize: 5.6
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -11806,7 +11852,7 @@ Transform:
   m_GameObject: {fileID: 1744997896}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.02, y: -3.169, z: -10}
+  m_LocalPosition: {x: 1.4664, y: -2.53, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13216,7 +13262,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 5.6
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -13241,7 +13287,7 @@ Transform:
   m_GameObject: {fileID: 1930976597}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4815736, y: 0.66334987, z: -10}
+  m_LocalPosition: {x: -0.09990263, y: 1.40536, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13837,7 +13883,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 780685724605382471, guid: 5dace69cceac5ea4c8e83e76c713c528, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.02
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 780685724605382471, guid: 5dace69cceac5ea4c8e83e76c713c528, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13906,3 +13952,4 @@ SceneRoots:
   - {fileID: 1744997899}
   - {fileID: 870448420}
   - {fileID: 659812684}
+  - {fileID: 1353541559}
