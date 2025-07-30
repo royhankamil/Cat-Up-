@@ -8,10 +8,14 @@ public class ItemSpawner : MonoBehaviour
     public InputActionReference mouseClickAction;
     public RectTransform imageRectTransform;
     
+    // Public property for RotatingObject to access
+    public RectTransform ImageRectTransform => imageRectTransform;
+    
     private bool isDragging = false;
     private bool hasSpawned = false;
     private Vector3 lastMousePosition;
     private GameObject currentItem;
+    private bool imageHidden = false;
 
     private void OnEnable()
     {
@@ -54,10 +58,11 @@ public class ItemSpawner : MonoBehaviour
         if (mouseClickAction.action.WasReleasedThisFrame())
         {
             isDragging = false;
+            hasSpawned = false; // Reset spawn state
             currentItem = null; // Release the item
         }
         
-        // Check for drag leaving the image during dragging
+        // Check for drag leaving the image during dragging (only once)
         if (isDragging && !hasSpawned)
         {
             bool isMouseOverImage = RectTransformUtility.RectangleContainsScreenPoint(
@@ -70,6 +75,24 @@ public class ItemSpawner : MonoBehaviour
             {
                 SpawnItem(mouseWorldPos);
                 hasSpawned = true;
+                HideImage();
+            }
+        }
+        
+        // Check if spawned item is dragged back to UI area (only when not dragging from ItemSpawner)
+        if (hasSpawned && currentItem != null && !isDragging)
+        {
+            bool isMouseOverImage = RectTransformUtility.RectangleContainsScreenPoint(
+                imageRectTransform,
+                mouseScreenPos,
+                Camera.main
+            );
+            if (isMouseOverImage)
+            {
+                ShowImage();
+                Destroy(currentItem);
+                currentItem = null;
+                hasSpawned = false;
             }
         }
         
@@ -85,13 +108,63 @@ public class ItemSpawner : MonoBehaviour
         if (itemPrefab != null)
         {
             currentItem = Instantiate(itemPrefab, position, Quaternion.identity);
-            currentItem.GetComponent<RotatingObject>().EnableDragging();
+            RotatingObject rotatingScript = currentItem.GetComponent<RotatingObject>();
+            if (rotatingScript != null)
+            {
+                rotatingScript.EnableDragging();
+                // Set reference to this ItemSpawner so RotatingObject can communicate back
+                rotatingScript.SetItemSpawner(this);
+            }
             currentItem.name = "item";
             Debug.Log("Item spawned at: " + position);
         }
         else
         {
             Debug.LogWarning("Item prefab not assigned!");
+        }
+    }
+    
+    void HideImage()
+    {
+        if (!imageHidden)
+        {
+            // Hide the image by setting alpha to 0
+            CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            }
+            canvasGroup.alpha = 0f;
+            imageHidden = true;
+            Debug.Log("Image hidden");
+        }
+    }
+    
+    void ShowImage()
+    {
+        if (imageHidden)
+        {
+            // Show the image by setting alpha back to 1
+            CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 1f;
+            }
+            imageHidden = false;
+            Debug.Log("Image shown");
+        }
+    }
+    
+    // Called by RotatingObject when item is dragged back to UI area
+    public void OnItemReturnedToUI()
+    {
+        if (hasSpawned && currentItem != null)
+        {
+            ShowImage();
+            Destroy(currentItem);
+            currentItem = null;
+            hasSpawned = false;
+            Debug.Log("Item returned to UI and destroyed");
         }
     }
 } 

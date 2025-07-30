@@ -12,6 +12,7 @@ public class RotatingObject : MonoBehaviour
 
     private bool isDragging = false;
     private Vector3 offset;
+    private ItemSpawner itemSpawner; // Reference to ItemSpawner
 
     private void OnEnable()
     {
@@ -28,6 +29,11 @@ public class RotatingObject : MonoBehaviour
     {
         isDragging = true;
         // Debug.Log("Dragging enabled!");
+    }
+    
+    public void SetItemSpawner(ItemSpawner spawner)
+    {
+        itemSpawner = spawner;
     }
 
     private void OnDisable()
@@ -95,5 +101,28 @@ public class RotatingObject : MonoBehaviour
             }
         }
         Debug.DrawLine(mouseWorldPos2D, mouseWorldPos2D + Vector2.up * 0.5f, Color.red, 0.1f);
+        
+        // Check if item is dragged back to UI area (if this item was spawned by ItemSpawner)
+        if (isDragging && itemSpawner != null)
+        {
+            // Convert mouse position to screen coordinates for UI check
+            Vector3 currentMouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
+            
+            // Check if mouse is over the ItemSpawner's image area
+            if (itemSpawner.ImageRectTransform != null)
+            {
+                bool isOverUI = RectTransformUtility.RectangleContainsScreenPoint(
+                    itemSpawner.ImageRectTransform,
+                    currentMouseScreenPos,
+                    Camera.main
+                );
+                
+                if (isOverUI)
+                {
+                    itemSpawner.OnItemReturnedToUI();
+                    return; // Stop processing this object
+                }
+            }
+        }
     }
 }
