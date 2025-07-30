@@ -36,14 +36,17 @@ public class ItemSpawner : MonoBehaviour
         // Start dragging
         if (mouseClickAction.action.WasPressedThisFrame())
         {
-            // Check if mouse is over this specific image
-            // (Old code used Collider2D, which is now not relevant for UI)
-            Collider2D hit = Physics2D.OverlapPoint(mouseWorldPos);
-            if (hit != null && hit.gameObject == gameObject)
+            // Check if mouse is over this specific image using UI rect
+            bool isMouseOverImage = RectTransformUtility.RectangleContainsScreenPoint(
+                imageRectTransform,
+                mouseScreenPos,
+                Camera.main
+            );
+            if (isMouseOverImage)
             {
                 isDragging = true;
                 hasSpawned = false;
-                lastMousePosition = mouseWorldPos;
+                lastMousePosition = mouseScreenPos;
             }
         }
         
@@ -55,22 +58,25 @@ public class ItemSpawner : MonoBehaviour
         }
         
         // Check for drag leaving the image during dragging
-        bool isMouseOverImage = RectTransformUtility.RectangleContainsScreenPoint(
-            imageRectTransform,
-            mouseScreenPos,
-            Camera.main
-        );
-        Debug.Log($"isDragging: {isDragging}, hasSpawned: {hasSpawned}, isMouseOverImage: {isMouseOverImage}, mouseScreenPos: {mouseScreenPos}");
-        if (isDragging && !hasSpawned && !isMouseOverImage)
+        if (isDragging && !hasSpawned)
         {
-            SpawnItem(mouseWorldPos);
-            hasSpawned = true;
+            bool isMouseOverImage = RectTransformUtility.RectangleContainsScreenPoint(
+                imageRectTransform,
+                mouseScreenPos,
+                Camera.main
+            );
+            Debug.Log($"isDragging: {isDragging}, hasSpawned: {hasSpawned}, isMouseOverImage: {isMouseOverImage}, mouseScreenPos: {mouseScreenPos}");
+            if (!isMouseOverImage)
+            {
+                SpawnItem(mouseWorldPos);
+                hasSpawned = true;
+            }
         }
         
         // Make the spawned item follow the mouse
         if (isDragging && currentItem != null)
         {
-            currentItem.transform.position = mouseWorldPos;
+            currentItem.transform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0f);
         }
     }
     
@@ -79,6 +85,7 @@ public class ItemSpawner : MonoBehaviour
         if (itemPrefab != null)
         {
             currentItem = Instantiate(itemPrefab, position, Quaternion.identity);
+            currentItem.GetComponent<RotatingObject>().EnableDragging();
             currentItem.name = "item";
             Debug.Log("Item spawned at: " + position);
         }

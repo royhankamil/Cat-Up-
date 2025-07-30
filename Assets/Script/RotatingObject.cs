@@ -19,8 +19,15 @@ public class RotatingObject : MonoBehaviour
         mouseClickAction.action.Enable();
         rotateLeftAction.action.Enable();
         rotateRightAction.action.Enable();
+        // isDragging = true;
         if (scrollAction != null) scrollAction.action.Enable();
         Debug.Log("Input actions enabled!");
+    }
+
+    public void EnableDragging()
+    {
+        isDragging = true;
+        // Debug.Log("Dragging enabled!");
     }
 
     private void OnDisable()
