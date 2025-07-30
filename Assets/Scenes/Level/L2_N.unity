@@ -686,11 +686,11 @@ Transform:
   m_GameObject: {fileID: 80594471}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.6, y: 35.9, z: -9.824764}
-  m_LocalScale: {x: 2.091419, y: 2.091419, z: 2.091419}
+  m_LocalPosition: {x: -39.6, y: 35.900005, z: -9.824765}
+  m_LocalScale: {x: 2.0914192, y: 2.0914192, z: 2.0914192}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 806072839}
+  m_Father: {fileID: 543227997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &80594473
 SpriteRenderer:
@@ -4005,6 +4005,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &543227996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 543227997}
+  m_Layer: 0
+  m_Name: Cloud
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &543227997
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543227996}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1374799286}
+  - {fileID: 1721432964}
+  - {fileID: 1338014514}
+  - {fileID: 80594472}
+  m_Father: {fileID: 806072839}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &551908428
 GameObject:
   m_ObjectHideFlags: 0
@@ -5044,10 +5079,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 3
   m_FalloffIntensity: 0.415
   m_Color: {r: 1, g: 0.5354179, b: 0.17647058, a: 1}
-  m_Intensity: 0.12
+  m_Intensity: 0.21
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 83825a21a13d3024212ac0739b3380c33773704b
+  m_ApplyToSortingLayers: 83825a21212ac0739b3380c33773704ba13d3024
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -5899,6 +5934,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 806072839}
+  - component: {fileID: 806072840}
   m_Layer: 0
   m_Name: Sky
   m_TagString: Untagged
@@ -5921,7 +5957,6 @@ Transform:
   m_Children:
   - {fileID: 743674766}
   - {fileID: 488908106}
-  - {fileID: 1374799286}
   - {fileID: 958225470}
   - {fileID: 773719740}
   - {fileID: 142005362}
@@ -5932,12 +5967,37 @@ Transform:
   - {fileID: 1682025762}
   - {fileID: 891055328}
   - {fileID: 1258825278}
-  - {fileID: 1721432964}
-  - {fileID: 1338014514}
-  - {fileID: 80594472}
+  - {fileID: 543227997}
   - {fileID: 1389394839}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &806072840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806072838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda0cefc43d3dd140a37799b8d206451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starsContainer: {fileID: 1389394839}
+  cloudsContainer: {fileID: 543227997}
+  glimmerMaxScaleMin: 1.1
+  glimmerMaxScaleMax: 1.5
+  glimmerDurationMin: 1
+  glimmerDurationMax: 3
+  glimmerMinAlpha: 0.4
+  glimmerMaxAlpha: 1
+  moveIntensityMin: 0.2
+  moveIntensityMax: 0.8
+  moveDurationMin: 5
+  moveDurationMax: 10
+  cloudMoveDistance: 3
+  cloudMoveDurationMin: 5
+  cloudMoveDurationMax: 15
 --- !u!1 &809089256
 GameObject:
   m_ObjectHideFlags: 0
@@ -5987,10 +6047,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.415
   m_Color: {r: 1, g: 0.5354179, b: 0.17647058, a: 1}
-  m_Intensity: 0.12
+  m_Intensity: 0.21
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 83825a21a13d3024212ac0739b3380c33773704b
+  m_ApplyToSortingLayers: 83825a21212ac0739b3380c33773704ba13d3024
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -6099,10 +6159,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.415
   m_Color: {r: 1, g: 0.5354179, b: 0.17647058, a: 1}
-  m_Intensity: 0.12
+  m_Intensity: 0.21
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 83825a21a13d3024212ac0739b3380c33773704b
+  m_ApplyToSortingLayers: 83825a21212ac0739b3380c33773704ba13d3024
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -7475,10 +7535,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 3
   m_FalloffIntensity: 0.415
   m_Color: {r: 1, g: 0.5354179, b: 0.17647058, a: 1}
-  m_Intensity: 0.12
+  m_Intensity: 0.21
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 83825a21a13d3024212ac0739b3380c33773704b
+  m_ApplyToSortingLayers: 83825a21212ac0739b3380c33773704ba13d3024
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -8156,6 +8216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1186089144}
+  - component: {fileID: 1186089145}
   m_Layer: 0
   m_Name: P_1
   m_TagString: Untagged
@@ -8181,6 +8242,31 @@ Transform:
   - {fileID: 1658900758}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1186089145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186089143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f928ba2a27ec542ab1397e4c835e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lamps:
+  - {fileID: 698687414}
+  - {fileID: 850603915}
+  - {fileID: 1628703142}
+  - {fileID: 809089258}
+  - {fileID: 1044219617}
+  - {fileID: 1700331907}
+  minIntensity: 0.21
+  maxIntensity: 0.25
+  minOuterRadiusMultiplier: 0.99
+  maxOuterRadiusMultiplier: 1.01
+  minFlickerDuration: 0.05
+  maxFlickerDuration: 0.2
 --- !u!1 &1191325627
 GameObject:
   m_ObjectHideFlags: 0
@@ -9217,11 +9303,11 @@ Transform:
   m_GameObject: {fileID: 1338014513}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28, y: 36.800003, z: -9.824764}
-  m_LocalScale: {x: 2.091419, y: 2.091419, z: 2.091419}
+  m_LocalPosition: {x: 28, y: 36.800007, z: -9.824765}
+  m_LocalScale: {x: 2.0914192, y: 2.0914192, z: 2.0914192}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 806072839}
+  m_Father: {fileID: 543227997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1338014515
 SpriteRenderer:
@@ -9478,11 +9564,11 @@ Transform:
   m_GameObject: {fileID: 1374799285}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17, y: 31, z: -9.824764}
-  m_LocalScale: {x: 2.843443, y: 2.2172053, z: 2.091419}
+  m_LocalPosition: {x: -17, y: 31, z: -9.824765}
+  m_LocalScale: {x: 2.8434432, y: 2.2172055, z: 2.0914192}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 806072839}
+  m_Father: {fileID: 543227997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1374799287
 SpriteRenderer:
@@ -10611,10 +10697,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 3
   m_FalloffIntensity: 0.415
   m_Color: {r: 1, g: 0.5354179, b: 0.17647058, a: 1}
-  m_Intensity: 0.12
+  m_Intensity: 0.21
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 83825a21a13d3024212ac0739b3380c33773704b
+  m_ApplyToSortingLayers: 83825a21212ac0739b3380c33773704ba13d3024
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -11336,10 +11422,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.415
   m_Color: {r: 1, g: 0.5354179, b: 0.17647058, a: 1}
-  m_Intensity: 0.12
+  m_Intensity: 0.21
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 1
-  m_ApplyToSortingLayers: 83825a21a13d3024212ac0739b3380c33773704b
+  m_ApplyToSortingLayers: 83825a21212ac0739b3380c33773704ba13d3024
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -11599,11 +11685,11 @@ Transform:
   m_GameObject: {fileID: 1721432963}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.2, y: 30.7, z: -9.824764}
-  m_LocalScale: {x: 2.091419, y: 2.091419, z: 2.091419}
+  m_LocalPosition: {x: 9.2, y: 30.700003, z: -9.824765}
+  m_LocalScale: {x: 2.0914192, y: 2.0914192, z: 2.0914192}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 806072839}
+  m_Father: {fileID: 543227997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1721432965
 SpriteRenderer:
