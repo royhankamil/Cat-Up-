@@ -32,6 +32,11 @@ public class RotatingObject : MonoBehaviour
     public void EnableDragging()
     {
         isDragging = true;
+        
+        // Vector3 mouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
+        // Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 0f));
+        // Vector2 mouseWorldPos2D = new Vector2(mouseWorldPos.x, mouseWorldPos.y);
+        // offset = transform.position - (Vector3)mouseWorldPos2D;
         // Debug.Log("Dragging enabled!");
     }
     
@@ -55,7 +60,8 @@ public class RotatingObject : MonoBehaviour
             return; 
 
         Vector3 mouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 0f));
+        float z = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, z));
         Vector2 mouseWorldPos2D = new Vector2(mouseWorldPos.x, mouseWorldPos.y);
 
         // Mouse down: check if mouse is over this object
@@ -82,7 +88,9 @@ public class RotatingObject : MonoBehaviour
         // Dragging: move object
         if (isDragging)
         {
+            Debug.Log(mouseWorldPos2D + " - " + offset);
             transform.position = mouseWorldPos2D + (Vector2)offset;
+            // transform.position = Vector3.zero;
 
             // Rotation with arrow keys
             if (rotateRightAction.action.IsPressed())
@@ -107,27 +115,27 @@ public class RotatingObject : MonoBehaviour
         Debug.DrawLine(mouseWorldPos2D, mouseWorldPos2D + Vector2.up * 0.5f, Color.red, 0.1f);
         
         // Check if item is dragged back to UI area (if this item was spawned by ItemSpawner)
-        if (isDragging && itemSpawner != null)
-        {
-            // Convert mouse position to screen coordinates for UI check
-            Vector3 currentMouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
+        // if (isDragging && itemSpawner != null)
+        // {
+        //     // Convert mouse position to screen coordinates for UI check
+        //     Vector3 currentMouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
             
-            // Check if mouse is over the ItemSpawner's image area
-            if (itemSpawner.ImageRectTransform != null)
-            {
-                bool isOverUI = RectTransformUtility.RectangleContainsScreenPoint(
-                    itemSpawner.ImageRectTransform,
-                    currentMouseScreenPos,
-                    Camera.main
-                );
+        //     // Check if mouse is over the ItemSpawner's image area
+        //     if (itemSpawner.ImageRectTransform != null)
+        //     {
+        //         bool isOverUI = RectTransformUtility.RectangleContainsScreenPoint(
+        //             itemSpawner.ImageRectTransform,
+        //             currentMouseScreenPos,
+        //             Camera.main
+        //         );
                 
-                if (isOverUI)
-                {
-                    // itemSpawner.OnItemReturnedToUI();
-                    itemSpawner.gameObject.SetActive(true); 
-                    Destroy(this); // Stop processing this object
-                }
-            }
-        }
+        //         if (isOverUI)
+        //         {
+        //             // itemSpawner.OnItemReturnedToUI();
+        //             itemSpawner.gameObject.SetActive(true); 
+        //             Destroy(this); // Stop processing this object
+        //         }
+        //     }
+        // }
     }
 }

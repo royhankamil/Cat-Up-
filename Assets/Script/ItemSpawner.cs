@@ -35,14 +35,15 @@ public class ItemSpawner : MonoBehaviour
             return;
 
         Vector3 mouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 0f));
+        float spawnZ = Mathf.Abs(Camera.main.transform.position.z);
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, spawnZ));
         
         // Start dragging
         if (mouseClickAction.action.WasPressedThisFrame())
         {
             // Check if mouse is over this specific image using UI rect
             bool isMouseOverImage = RectTransformUtility.RectangleContainsScreenPoint(
-                imageRectTransform,
+                transform as RectTransform,
                 mouseScreenPos,
                 Camera.main
             );
@@ -74,6 +75,7 @@ public class ItemSpawner : MonoBehaviour
             if (!isMouseOverImage)
             {
                 SpawnItem(mouseWorldPos);
+                Debug.Log(mouseWorldPos);   
                 hasSpawned = true;
                 HideImage();
             }
@@ -97,10 +99,10 @@ public class ItemSpawner : MonoBehaviour
         }
         
         // Make the spawned item follow the mouse
-        if (isDragging && currentItem != null)
-        {
-            currentItem.transform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0f);
-        }
+        // if (isDragging && currentItem != null)
+        // {
+        //     currentItem.transform.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, 0f);
+        // }
     }
     
     void SpawnItem(Vector3 position)
@@ -116,7 +118,7 @@ public class ItemSpawner : MonoBehaviour
                 // Set reference to this ItemSpawner so RotatingObject can communicate back
                 rotatingScript.SetItemSpawner(this);
             }
-            currentItem.name = "item";
+            // currentItem.name = "item";
             Debug.Log("Item spawned at: " + position);
         }
         else
@@ -130,15 +132,15 @@ public class ItemSpawner : MonoBehaviour
         if (!imageHidden)
         {
             // // Hide the image by setting alpha to 0
-            // CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-            // if (canvasGroup == null)
-            // {
-            //     canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            // }
-            // canvasGroup.alpha = 0f;
+            CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            }
+            canvasGroup.alpha = 0f;
             imageHidden = true;
             // Debug.Log("Image hidden");
-            gameObject.SetActive(false); // Hide the entire GameObject
+            // gameObject.SetActive(false); // Hide the entire GameObject
         }
     }
     
@@ -146,12 +148,12 @@ public class ItemSpawner : MonoBehaviour
     {
         if (imageHidden)
         {
-            // // Show the image by setting alpha back to 1
-            // CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-            // if (canvasGroup != null)
-            // {
-            //     canvasGroup.alpha = 1f;
-            // }
+            // Show the image by setting alpha back to 1
+            CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 1f;
+            }
             imageHidden = false;
             // Debug.Log("Image shown");
         }
@@ -169,4 +171,4 @@ public class ItemSpawner : MonoBehaviour
             Debug.Log("Item returned to UI and destroyed");
         }
     }
-} 
+}
