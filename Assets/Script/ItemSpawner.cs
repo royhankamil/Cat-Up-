@@ -7,7 +7,7 @@ public class ItemSpawner : MonoBehaviour
     public InputActionReference mousePositionAction;
     public InputActionReference mouseClickAction;
     public RectTransform imageRectTransform;
-    
+    public ObjectType objectType;
     // Public property for RotatingObject to access
     public RectTransform ImageRectTransform => imageRectTransform;
     
@@ -87,13 +87,13 @@ public class ItemSpawner : MonoBehaviour
                 mouseScreenPos,
                 Camera.main
             );
-            if (isMouseOverImage)
-            {
-                ShowImage();
-                Destroy(currentItem);
-                currentItem = null;
-                hasSpawned = false;
-            }
+            // if (isMouseOverImage)
+            // {
+            //     ShowImage();
+            //     Destroy(currentItem);
+            //     currentItem = null;
+            //     hasSpawned = false;
+            // }
         }
         
         // Make the spawned item follow the mouse
@@ -109,6 +109,7 @@ public class ItemSpawner : MonoBehaviour
         {
             currentItem = Instantiate(itemPrefab, position, Quaternion.identity);
             RotatingObject rotatingScript = currentItem.GetComponent<RotatingObject>();
+            // rotatingScript.ImageReference = this.gameObject;
             if (rotatingScript != null)
             {
                 rotatingScript.EnableDragging();
@@ -128,15 +129,16 @@ public class ItemSpawner : MonoBehaviour
     {
         if (!imageHidden)
         {
-            // Hide the image by setting alpha to 0
-            CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
-            {
-                canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            }
-            canvasGroup.alpha = 0f;
+            // // Hide the image by setting alpha to 0
+            // CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+            // if (canvasGroup == null)
+            // {
+            //     canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            // }
+            // canvasGroup.alpha = 0f;
             imageHidden = true;
-            Debug.Log("Image hidden");
+            // Debug.Log("Image hidden");
+            gameObject.SetActive(false); // Hide the entire GameObject
         }
     }
     
@@ -144,14 +146,14 @@ public class ItemSpawner : MonoBehaviour
     {
         if (imageHidden)
         {
-            // Show the image by setting alpha back to 1
-            CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-            if (canvasGroup != null)
-            {
-                canvasGroup.alpha = 1f;
-            }
+            // // Show the image by setting alpha back to 1
+            // CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+            // if (canvasGroup != null)
+            // {
+            //     canvasGroup.alpha = 1f;
+            // }
             imageHidden = false;
-            Debug.Log("Image shown");
+            // Debug.Log("Image shown");
         }
     }
     

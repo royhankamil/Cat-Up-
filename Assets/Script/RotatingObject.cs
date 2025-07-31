@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,8 +9,11 @@ public class RotatingObject : MonoBehaviour
     public InputActionReference rotateLeftAction;
     public InputActionReference rotateRightAction;
     public InputActionReference scrollAction;
-    public float scrollRotationSpeed = 300f;
 
+    public float scrollRotationSpeed = 300f;
+    // public GameObject ImageReference; 
+
+    [SerializeField] private ObjectType objectType; 
     private bool isDragging = false;
     private Vector3 offset;
     private ItemSpawner itemSpawner; // Reference to ItemSpawner
@@ -119,8 +123,9 @@ public class RotatingObject : MonoBehaviour
                 
                 if (isOverUI)
                 {
-                    itemSpawner.OnItemReturnedToUI();
-                    return; // Stop processing this object
+                    // itemSpawner.OnItemReturnedToUI();
+                    itemSpawner.gameObject.SetActive(true); 
+                    Destroy(this); // Stop processing this object
                 }
             }
         }
