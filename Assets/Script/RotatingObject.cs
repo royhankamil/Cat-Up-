@@ -77,19 +77,27 @@ public class RotatingObject : MonoBehaviour
                 isDragging = true;
                 offset = transform.position - (Vector3)mouseWorldPos2D;
             }
+            
+            gameObject.layer = LayerMask.NameToLayer("DraggingItem");
+
         }
 
         // Mouse up: stop dragging
         if (mouseClickAction.action.WasReleasedThisFrame())
         {
             isDragging = false;
+            gameObject.layer = LayerMask.NameToLayer("Item");
         }
 
         // Dragging: move object
         if (isDragging)
         {
             Debug.Log(mouseWorldPos2D + " - " + offset);
-            transform.position = mouseWorldPos2D + (Vector2)offset;
+            Collider2D[] overlaps = Physics2D.OverlapCircleAll(mouseWorldPos2D, 0.1f);
+            if (overlaps.Length <= 1) // berarti hanya dirinya sendiri
+            {
+                transform.position = mouseWorldPos2D + (Vector2)offset;
+            }
             // transform.position = Vector3.zero;
 
             // Rotation with arrow keys
