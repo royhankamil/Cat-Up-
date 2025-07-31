@@ -49,6 +49,12 @@ TagManager:
   - name: UI
     uniqueID: 3561607899
     locked: 0
+  - name: S_2
+    uniqueID: 3748735111
+    locked: 0
+  - name: S_1
+    uniqueID: 3039936783
+    locked: 0
   - name: L7
     uniqueID: 3279958939
     locked: 0
