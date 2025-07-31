@@ -139,7 +139,7 @@ public class ItemSpawner : MonoBehaviour
             }
 
             transform.SetSiblingIndex(transform.parent.childCount - 1);
-            
+
             canvasGroup.alpha = 0f;
             imageHidden = true;
             // Debug.Log("Image hidden");
@@ -170,6 +170,7 @@ public class ItemSpawner : MonoBehaviour
             ShowImage();
             Destroy(currentItem);
             currentItem = null;
+            isDragging = false;
             hasSpawned = false;
             Debug.Log("Item returned to UI and destroyed");
         }
