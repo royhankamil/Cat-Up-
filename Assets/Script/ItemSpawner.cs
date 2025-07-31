@@ -163,16 +163,16 @@ public class ItemSpawner : MonoBehaviour
     }
     
     // Called by RotatingObject when item is dragged back to UI area
-    public void OnItemReturnedToUI()
+    public void OnItemReturnedToUI(GameObject obj)
     {
-        if (hasSpawned && currentItem != null)
-        {
+        // if (hasSpawned && currentItem != null)
+        // {
             ShowImage();
-            Destroy(currentItem);
+            Destroy(obj);
             currentItem = null;
             isDragging = false;
             hasSpawned = false;
             Debug.Log("Item returned to UI and destroyed");
-        }
+        // }
     }
 }

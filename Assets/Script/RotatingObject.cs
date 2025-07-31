@@ -119,6 +119,7 @@ public class RotatingObject : MonoBehaviour
         {
             // Convert mouse position to screen coordinates for UI check
             Vector3 currentMouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
+            Debug.Log("Current mouse screen position: " + currentMouseScreenPos);
             
             // Check if mouse is over the ItemSpawner's image area
             if (itemSpawner.ImageRectTransform != null)
@@ -128,10 +129,11 @@ public class RotatingObject : MonoBehaviour
                     currentMouseScreenPos,
                     Camera.main
                 );
-                
+                Debug.Log("Is over UI: " + isOverUI);
+
                 if (isOverUI)
                 {
-                    itemSpawner.OnItemReturnedToUI();
+                    itemSpawner.OnItemReturnedToUI(this.gameObject);
                     // itemSpawner.gameObject.SetActive(true); 
                     // Destroy(this); // Stop processing this object
                 }
