@@ -137,6 +137,9 @@ public class ItemSpawner : MonoBehaviour
             {
                 canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
+
+            transform.SetSiblingIndex(transform.parent.childCount - 1);
+            
             canvasGroup.alpha = 0f;
             imageHidden = true;
             // Debug.Log("Image hidden");
