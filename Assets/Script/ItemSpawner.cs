@@ -158,21 +158,22 @@ public class ItemSpawner : MonoBehaviour
                 canvasGroup.alpha = 1f;
             }
             imageHidden = false;
+            transform.SetSiblingIndex(0);
             // Debug.Log("Image shown");
         }
     }
-    
+
     // Called by RotatingObject when item is dragged back to UI area
     public void OnItemReturnedToUI(GameObject obj)
     {
         // if (hasSpawned && currentItem != null)
         // {
-            ShowImage();
-            Destroy(obj);
-            currentItem = null;
-            isDragging = false;
-            hasSpawned = false;
-            Debug.Log("Item returned to UI and destroyed");
+        ShowImage();
+        Destroy(obj);
+        currentItem = null;
+        isDragging = false;
+        hasSpawned = false;
+        Debug.Log("Item returned to UI and destroyed");
         // }
     }
 }

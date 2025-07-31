@@ -47,11 +47,11 @@ public class RotatingObject : MonoBehaviour
 
     private void OnDisable()
     {
-        mousePositionAction.action.Disable();
-        mouseClickAction.action.Disable();
-        rotateLeftAction.action.Disable();
-        rotateRightAction.action.Disable();
-        if (scrollAction != null) scrollAction.action.Disable();
+        // mousePositionAction.action.Disable();
+        // mouseClickAction.action.Disable();
+        // rotateLeftAction.action.Disable();
+        // rotateRightAction.action.Disable();
+        // if (scrollAction != null) scrollAction.action.Disable();
     }
 
     void Update()
