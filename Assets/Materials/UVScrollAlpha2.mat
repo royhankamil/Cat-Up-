@@ -42,7 +42,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _ScrollSpeedX: 0.01
+    - _OffsetX: 0.386
+    - _OffsetY: 0
+    - _ScrollSpeedX: 0.005
     - _ScrollSpeedY: 0
     - _ZWrite: 0
     m_Colors:
