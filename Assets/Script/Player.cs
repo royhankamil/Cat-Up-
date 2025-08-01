@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
         {
             jumpTriggered = true;
             isJumpHeld = true;
+            AudioManager.Instance.PlaySfx("Jump");
         }
         else if (context.canceled)
         {
@@ -151,6 +152,7 @@ public class Player : MonoBehaviour
             else if (isGrounded && Mathf.Abs(moveInput.x) < 0.1f)
             {
                 anim.SetBool("isSit", true);
+                AudioManager.Instance.PlaySfx("SitDown");
             }
         }
         sitTriggered = false;
@@ -169,11 +171,12 @@ public class Player : MonoBehaviour
         bool shouldBreakSit = (Mathf.Abs(moveInput.x) > 0.1f) || (jumpTriggered && isGrounded);
         if (shouldBreakSit)
         {
-            if(anim.GetBool("isSit") || anim.GetBool("isSleep"))
+            if (anim.GetBool("isSit") || anim.GetBool("isSleep"))
             {
                 anim.SetBool("isSit", false);
                 anim.SetBool("isSleep", false);
                 sitTimer = 0f;
+                AudioManager.Instance.PlaySfx("StandUp");
             }
         }
 

@@ -111,6 +111,16 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
+        // --- MODIFIED START ---
+        // For music, we expect at least one clip. We'll use the first one.
+        if (s.clips == null || s.clips.Length == 0 || s.clips[0] == null)
+        {
+            Debug.LogWarning("Music sound '" + name + "' has no valid clip assigned.");
+            return;
+        }
+        AudioClip musicClip = s.clips[0];
+        // --- MODIFIED END ---
+
         AudioSource targetSource = (layer == 1) ? musicSource1 : musicSource2;
         if (targetSource == null)
         {
@@ -118,18 +128,22 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
+        // --- MODIFIED START ---
         // If the same track is already playing on this layer, do nothing.
-        if (targetSource.isPlaying && targetSource.clip == s.clip)
+        if (targetSource.isPlaying && targetSource.clip == musicClip)
         {
             return;
         }
+        // --- MODIFIED END ---
 
         // Stop any previous fade coroutine running on this layer.
         if (layer == 1 && fadeCoroutine1 != null) StopCoroutine(fadeCoroutine1);
         if (layer == 2 && fadeCoroutine2 != null) StopCoroutine(fadeCoroutine2);
 
-        // Start the crossfade and store a reference to the new coroutine.
-        Coroutine newFade = StartCoroutine(Crossfade(targetSource, s.clip, fadeDuration));
+        // --- MODIFIED START ---
+        // Start the crossfade with the selected clip and store a reference to the new coroutine.
+        Coroutine newFade = StartCoroutine(Crossfade(targetSource, musicClip, fadeDuration));
+        // --- MODIFIED END ---
         if (layer == 1)
             fadeCoroutine1 = newFade;
         else
@@ -202,6 +216,10 @@ public class AudioManager : MonoBehaviour
         source.clip = null;
     }
 
+    // --- MODIFIED START: PlaySfx method updated for random clips ---
+    /// <summary>
+    /// Plays a sound effect by name. If the sound has multiple clips, one is chosen at random.
+    /// </summary>
     public void PlaySfx(string name)
     {
         if (sfxSource == null) return;
@@ -210,14 +228,30 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("SFX: " + name + " not found!");
             return;
         }
-        sfxSource.PlayOneShot(s.clip);
+
+        // Check if there are any clips to play.
+        if (s.clips == null || s.clips.Length == 0)
+        {
+            Debug.LogWarning("SFX: " + name + " has no audio clips assigned.");
+            return;
+        }
+
+        // Select a random clip from the array.
+        AudioClip clipToPlay = s.clips[UnityEngine.Random.Range(0, s.clips.Length)];
+
+        // Play the chosen clip if it's not null.
+        if (clipToPlay != null)
+        {
+            sfxSource.PlayOneShot(clipToPlay);
+        }
     }
+    // --- MODIFIED END ---
 
     public void SetMusicVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
-        // Set volume for both sources, applying the 1/5th rule for layer 2.
+        // Set volume for both sources, applying the rule for layer 2.
         if (musicSource1 != null) musicSource1.volume = volume;
         if (musicSource2 != null) musicSource2.volume = volume / 2f;
 
@@ -242,13 +276,16 @@ public class AudioManager : MonoBehaviour
     }
 }
 
-// A simple helper class to organize AudioClips.
+// --- MODIFIED START: Sound class now uses an array for clips ---
+// A helper class to organize one or more AudioClips.
 [System.Serializable]
 public class Sound
 {
     public string name;
-    public AudioClip clip;
+    [Tooltip("The audio clip(s) for this sound. For SFX, a random clip is chosen. For music, the first clip is used.")]
+    public AudioClip[] clips;
 }
+// --- MODIFIED END ---
 
 // A helper class to link a scene name to a music track name and layer.
 [System.Serializable]
