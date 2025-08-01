@@ -1,25 +1,120 @@
 using UnityEngine;
+using UnityEngine.EventSystems; // Required to detect the clicked button
 using DG.Tweening;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public GameObject StartMenu, MainMenu;
-    public Transform ground1, ground2;
+    [Header("Menus & Canvases")]
+    public GameObject StartMenu;
+    public GameObject MainMenu;
+    public GameObject SettingMenu;
+    public GameObject HomeMenu; // Assumed to be the main panel within MainMenu
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Animated World Elements")]
+    public Transform ground1;
+    public Transform ground2;
+
+    private bool isTransitioning = false;
+    private Sequence currentSequence;
+
+    private void Start()
     {
-
+        DOTween.Init();
+        foreach (var menu in new[] { StartMenu, MainMenu, SettingMenu, HomeMenu })
+        {
+            if (menu != null && menu.GetComponent<CanvasGroup>() == null)
+            {
+                menu.AddComponent<CanvasGroup>();
+            }
+        }
     }
 
-    public void goToMainMenu()
+    private void OnDestroy()
     {
-        StartMenu.SetActive(false);
-        MainMenu.SetActive(true);
-        MainMenu.GetComponent<CanvasGroup>().DOFade(1f, 1f).From(0f);
-        AudioManager.Instance.PlaySfx("Button Click");
-        ground1.transform.DOLocalMoveY(ground1.transform.localPosition.y, 2f).From(ground1.transform.localPosition.y - 200);
-        ground2.transform.DOLocalMoveY(ground2.transform.localPosition.y, 1f).From(ground2.transform.localPosition.y - 200);
+        currentSequence?.Kill();
     }
 
+    private void AnimateButtonClick(Transform buttonTransform)
+    {
+        // AudioManager.Instance.PlaySfx("Button Click"); // Assuming you have an AudioManager
+        buttonTransform.DOPunchScale(
+            punch: new Vector3(0.15f, 0.15f, 0.15f),
+            duration: 0.3f,
+            vibrato: 5,
+            elasticity: 1);
+    }
+
+    // --- Public Methods for UI Button Events ---
+
+    public void GoToMainMenu() // No parameter needed
+    {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        // Automatically get the transform of the button that was just clicked
+        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+
+        currentSequence?.Kill();
+        currentSequence = DOTween.Sequence();
+
+        currentSequence
+            .AppendCallback(() =>
+            {
+                StartMenu.SetActive(false);
+                MainMenu.SetActive(true);
+            })
+            .Append(MainMenu.GetComponent<CanvasGroup>().DOFade(1f, 1f).From(0f))
+            .OnComplete(() =>
+            {
+                isTransitioning = false;
+            });
+    }
+
+    public void GoToSettings() // No parameter needed
+    {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+
+        currentSequence?.Kill();
+        currentSequence = DOTween.Sequence();
+
+        currentSequence
+            .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
+            .AppendCallback(() =>
+            {
+                HomeMenu.SetActive(false);
+                SettingMenu.SetActive(true);
+            })
+            .Append(SettingMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f).From(0f))
+            .OnComplete(() =>
+            {
+                isTransitioning = false;
+            });
+    }
+
+    public void GoToHome() // No parameter needed
+    {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+
+        currentSequence?.Kill();
+        currentSequence = DOTween.Sequence();
+
+        currentSequence
+            .Append(SettingMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
+            .AppendCallback(() =>
+            {
+                SettingMenu.SetActive(false);
+                HomeMenu.SetActive(true);
+            })
+            .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f).From(0f))
+            .OnComplete(() =>
+            {
+                isTransitioning = false;
+            });
+    }
 }
