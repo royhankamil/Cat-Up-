@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SitSpot : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class SitSpot : MonoBehaviour
             if (player.sitTriggered)
             {
                 winUI.SetActive(true); // Reset sit trigger after use
+                PlayerPrefs.SetInt("Level", SceneManager.GetActiveScene().buildIndex);
             }
         }
     }
