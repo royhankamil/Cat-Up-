@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static bool IsPlay { get; private set; } = false;
-    [SerializeField] private TextMeshProUGUI playText;
+    // [SerializeField] private TextMeshProUGUI playText;
     [SerializeField] private Sprite playSprite, resetSprite;
     [SerializeField] private Image playImage;
 
@@ -20,16 +20,22 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // Debug.Log("rdttfcg");
+    }
 
+    void Exit()
+    {
+        SceneManager.LoadScene(1);
     }
 
     public void OnPlayPress()
     {
         IsPlay = !IsPlay;
+        Debug.Log("IsPlay: " + IsPlay);
         playImage.sprite = IsPlay ? resetSprite : playSprite;
         if (!IsPlay)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(2);
         }
         else
         {

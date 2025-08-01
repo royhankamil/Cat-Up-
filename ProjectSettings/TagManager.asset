@@ -46,9 +46,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 3561607899
-    locked: 0
   - name: S_2
     uniqueID: 3748735111
     locked: 0
@@ -75,6 +72,9 @@ TagManager:
     locked: 0
   - name: L1
     uniqueID: 2422665727
+    locked: 0
+  - name: UI
+    uniqueID: 3561607899
     locked: 0
   m_RenderingLayers:
   - Default
