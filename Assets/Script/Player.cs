@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private bool isJumpHeld = false;
     private bool jumpTriggered = false; 
-    private bool sitTriggered = false;
+    public bool sitTriggered { get; private set; } = false;
     
     // State tracking variables
     private bool isGrounded;

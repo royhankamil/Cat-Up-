@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void OnReset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void OnPlayPress()
     {
         IsPlay = !IsPlay;
@@ -35,7 +40,7 @@ public class GameManager : MonoBehaviour
         playImage.sprite = IsPlay ? resetSprite : playSprite;
         if (!IsPlay)
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else
         {
@@ -59,6 +64,11 @@ public class GameManager : MonoBehaviour
         // {
         //     Time.timeScale = 1f;
         // }
+
+    }
+
+    public void OnNextLevel()
+    {
 
     }
     
