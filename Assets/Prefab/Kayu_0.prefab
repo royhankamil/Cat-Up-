@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 475791084121841434}
   - component: {fileID: 3503789454143619103}
   - component: {fileID: 105925031841187067}
+  - component: {fileID: 3257755789014883464}
   m_Layer: 6
   m_Name: Kayu_0
   m_TagString: Object
@@ -29,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 388291554041724265}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.926189, y: -0.5736928, z: 0}
-  m_LocalScale: {x: 0.9414, y: 0.802352, z: 1}
+  m_LocalPosition: {x: -2.926189, y: -0.5736928, z: -4.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: 79dafa80de70a844fb07f6c21d705adc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1607069681
   m_SortingLayer: 7
-  m_SortingOrder: 19
+  m_SortingOrder: 2
   m_Sprite: {fileID: 378174699, guid: 1a70cd5eea105ad4b90a026796406760, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -151,7 +152,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.014473438, y: -0.033978045}
+  m_Offset: {x: 0.0037002563, y: -0.029764593}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -161,7 +162,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.3161182, y: 0.60067666}
+  m_Size: {x: 3.2945719, y: 0.54168934}
   m_EdgeRadius: 0
 --- !u!114 &105925031841187067
 MonoBehaviour:
@@ -182,3 +183,56 @@ MonoBehaviour:
   scrollAction: {fileID: 6240969308177333660, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   scrollRotationSpeed: 300
   objectType: 0
+--- !u!114 &3257755789014883464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388291554041724265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_Priority: 2
+  m_ComponentVersion: 5
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_AlphaCutoff: 0
+  m_ApplyToSortingLayers: 9752daa000000000872871df0fc131b59b3380c3212ac073a13d302483825a210f1036a03773704bfff16690dbd249d4
+  m_ShapePath:
+  - {x: -1.8, y: -0.4666667, z: 0}
+  - {x: -1.8, y: 0.4666667, z: 0}
+  - {x: 1.8000001, y: 0.4666667, z: 0}
+  - {x: 1.8000001, y: -0.4666667, z: 0}
+  m_ShapePathHash: 0
+  m_InstanceId: 0
+  m_ShadowShape2DComponent: {fileID: 3503789454143619103}
+  m_ShadowShape2DProvider:
+    rid: 4034917444346183813
+  m_ShadowCastingSource: 2
+  m_ShadowMesh:
+    m_Mesh: {fileID: 0}
+    m_LocalBounds:
+      m_Center: {x: 0.0034866333, y: -0.023880005, z: 0}
+      m_Extent: {x: 1.5507431, y: 0.21730042, z: 0}
+    m_EdgeProcessing: 1
+    m_TrimEdge: 0
+    m_FlipX: 0
+    m_FlipY: 0
+    m_InitialTrim: 0
+  m_CastingOption: 1
+  m_PreviousTrimEdge: 0
+  m_PreviousEdgeProcessing: 1
+  m_PreviousShadowCastingSource: 2
+  m_PreviousShadowShape2DSource: {fileID: 3503789454143619103}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4034917444346183813
+      type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 

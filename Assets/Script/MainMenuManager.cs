@@ -121,8 +121,9 @@ public class MainMenuManager : MonoBehaviour
             });
     }
 
-    public void Quit()
+    public void Quit(Transform transform)
     {
+        AnimateButtonClick(transform);
         // This code will only run in a built application
 #if UNITY_STANDALONE
             Application.Quit();
