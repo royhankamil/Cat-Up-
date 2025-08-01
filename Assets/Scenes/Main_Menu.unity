@@ -536,7 +536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &309642636
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1419,28 +1419,16 @@ MonoBehaviour:
           m_StringArgument: Button Click
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1474403743}
-        m_TargetAssemblyTypeName: LoadingManager, Assembly-CSharp
-        m_MethodName: ShowLoadingScreen
-        m_Mode: 1
+      - m_Target: {fileID: 2084235856}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: GoToLevelMenu
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 637281078}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1874169597}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: loadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: L2_N
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &637281080
@@ -1601,7 +1589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &685274410
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2222,7 +2210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &905778385
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3785,7 +3773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1515509298
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4634,7 +4622,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2084235856}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: GoToHome
+        m_MethodName: GoToHomeFromLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5333,6 +5321,7 @@ MonoBehaviour:
   MainMenu: {fileID: 905778384}
   SettingMenu: {fileID: 1592192294}
   HomeMenu: {fileID: 309642635}
+  LevelMenu: {fileID: 685274409}
   ground1: {fileID: 345356344}
   ground2: {fileID: 1801022935}
 --- !u!1 &2091391533
