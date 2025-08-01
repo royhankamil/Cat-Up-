@@ -111,7 +111,6 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // --- MODIFIED START ---
         // For music, we expect at least one clip. We'll use the first one.
         if (s.clips == null || s.clips.Length == 0 || s.clips[0] == null)
         {
@@ -119,7 +118,6 @@ public class AudioManager : MonoBehaviour
             return;
         }
         AudioClip musicClip = s.clips[0];
-        // --- MODIFIED END ---
 
         AudioSource targetSource = (layer == 1) ? musicSource1 : musicSource2;
         if (targetSource == null)
@@ -128,22 +126,18 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // --- MODIFIED START ---
         // If the same track is already playing on this layer, do nothing.
         if (targetSource.isPlaying && targetSource.clip == musicClip)
         {
             return;
         }
-        // --- MODIFIED END ---
 
         // Stop any previous fade coroutine running on this layer.
         if (layer == 1 && fadeCoroutine1 != null) StopCoroutine(fadeCoroutine1);
         if (layer == 2 && fadeCoroutine2 != null) StopCoroutine(fadeCoroutine2);
 
-        // --- MODIFIED START ---
         // Start the crossfade with the selected clip and store a reference to the new coroutine.
         Coroutine newFade = StartCoroutine(Crossfade(targetSource, musicClip, fadeDuration));
-        // --- MODIFIED END ---
         if (layer == 1)
             fadeCoroutine1 = newFade;
         else
@@ -216,9 +210,9 @@ public class AudioManager : MonoBehaviour
         source.clip = null;
     }
 
-    // --- MODIFIED START: PlaySfx method updated for random clips ---
+    // --- MODIFIED START ---
     /// <summary>
-    /// Plays a sound effect by name. If the sound has multiple clips, one is chosen at random.
+    /// Plays an SFX by name, respecting its chance and individual volume settings.
     /// </summary>
     public void PlaySfx(string name)
     {
@@ -226,6 +220,12 @@ public class AudioManager : MonoBehaviour
         if (!sfxSoundsDict.TryGetValue(name, out Sound s))
         {
             Debug.LogWarning("SFX: " + name + " not found!");
+            return;
+        }
+
+        // Check if the sound should play based on its chance property.
+        if (UnityEngine.Random.value > s.chance)
+        {
             return;
         }
 
@@ -242,7 +242,9 @@ public class AudioManager : MonoBehaviour
         // Play the chosen clip if it's not null.
         if (clipToPlay != null)
         {
-            sfxSource.PlayOneShot(clipToPlay);
+            // Use the overload of PlayOneShot that takes a volume scale.
+            // This multiplies the sfxSource's master volume by the sound's individual volume.
+            sfxSource.PlayOneShot(clipToPlay, s.volume);
         }
     }
     // --- MODIFIED END ---
@@ -276,16 +278,29 @@ public class AudioManager : MonoBehaviour
     }
 }
 
-// --- MODIFIED START: Sound class now uses an array for clips ---
+
+// --- MODIFIED START: Sound class now has an individual 'volume' slider ---
 // A helper class to organize one or more AudioClips.
 [System.Serializable]
 public class Sound
 {
     public string name;
+
     [Tooltip("The audio clip(s) for this sound. For SFX, a random clip is chosen. For music, the first clip is used.")]
     public AudioClip[] clips;
+
+    [Tooltip("The chance (0.0 to 1.0) that this SFX will play when triggered. This does not affect music.")]
+    [Range(0f, 1f)]
+    public float chance = 1f;
+
+    // --- NEW ---
+    [Tooltip("Individual volume multiplier for this sound (0.0 to 1.0). This does not affect music.")]
+    [Range(0f, 1f)]
+    public float volume = 1f;
+    // --- END NEW ---
 }
 // --- MODIFIED END ---
+
 
 // A helper class to link a scene name to a music track name and layer.
 [System.Serializable]
