@@ -3,11 +3,15 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static bool IsPlay { get; private set; } = false;
     [SerializeField] private TextMeshProUGUI playText;
+    [SerializeField] private Sprite playSprite, resetSprite;
+    [SerializeField] private Image playImage;
+
     private List<Rigidbody2D> rigidbodies = new List<Rigidbody2D>();
     void Start()
     {
@@ -22,7 +26,7 @@ public class GameManager : MonoBehaviour
     public void OnPlayPress()
     {
         IsPlay = !IsPlay;
-        playText.text = IsPlay ? "Reset" : "Play";
+        playImage.sprite = IsPlay ? resetSprite : playSprite;
         if (!IsPlay)
         {
             SceneManager.LoadScene(0);
