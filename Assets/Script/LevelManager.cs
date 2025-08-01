@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start() 
     {
-        int level = playerprefs.GetInt("level", 1);
+        int level = PlayerPrefs.GetInt("level", 1);
         for (int i = 0; i < buttons.Length; i++)
         {
             if (i < level)
