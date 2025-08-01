@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         // Debug.Log("rdttfcg");
     }
 
-    void Exit()
+    public void Exit()
     {
         SceneManager.LoadScene(1);
     }
