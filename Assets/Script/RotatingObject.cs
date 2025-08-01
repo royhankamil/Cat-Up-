@@ -57,7 +57,13 @@ public class RotatingObject : MonoBehaviour
     void Update()
     {
         if (GameManager.IsPlay)
+        {
+            if (gameObject.layer == LayerMask.NameToLayer("DraggingItem"))
+            {
+                gameObject.layer = LayerMask.NameToLayer("Item");
+            }
             return; 
+        }
 
         Vector3 mouseScreenPos = mousePositionAction.action.ReadValue<Vector2>();
         float z = Mathf.Abs(Camera.main.transform.position.z);
