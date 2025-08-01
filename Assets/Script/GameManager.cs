@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 
     public void OnNextLevel()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     
 }
