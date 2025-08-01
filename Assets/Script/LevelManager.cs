@@ -3,8 +3,26 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public void loadScene(string name)
+    public Button[] buttons;
+
+    private void Start() 
     {
-        SceneManager.LoadScene(name);
+        int level = playerprefs.GetInt("level", 1);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            if (i < level)
+            {
+                buttons[i].interactable = true;
+            }
+            else
+            {
+                buttons[i].interactable = false;
+            }
+        }
+    }
+
+    public void loadScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
 }
