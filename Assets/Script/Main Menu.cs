@@ -47,6 +47,7 @@ public class MainMenuAnimator : MonoBehaviour
 
     void Start()
     {
+
         // --- Safety Checks ---
         // Ensure the logo transform is assigned before trying to animate it.
         if (logoTransform == null)

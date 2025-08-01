@@ -11,29 +11,32 @@ public class AudioManager : MonoBehaviour
     // Static instance of the AudioManager to ensure only one exists.
     public static AudioManager Instance;
 
-    // Arrays to hold sound clips, configured in the Inspector.
+    [Header("Sound Arrays")]
     public Sound[] musicSounds;
     public Sound[] sfxSounds;
 
-    // Array to configure which music plays on which scene.
+    [Header("Scene Music Configuration")]
+    // Array to configure which music plays on which scene and on which layer.
     public SceneMusic[] sceneMusicSettings;
 
-    // Dictionaries for fast, name-based lookups at runtime.
-    private Dictionary<string, Sound> musicSoundsDict = new Dictionary<string, Sound>();
-    private Dictionary<string, Sound> sfxSoundsDict = new Dictionary<string, Sound>();
-
+    [Header("Audio Sources")]
     // AudioSources for playing two layers of music and sound effects.
     public AudioSource musicSource1;
     public AudioSource musicSource2;
     public AudioSource sfxSource;
 
+    // Dictionaries for fast, name-based lookups at runtime.
+    private Dictionary<string, Sound> musicSoundsDict = new Dictionary<string, Sound>();
+    private Dictionary<string, Sound> sfxSoundsDict = new Dictionary<string, Sound>();
+
     // To keep track of fading coroutines for each music source.
     private Coroutine fadeCoroutine1;
     private Coroutine fadeCoroutine2;
 
-    // This method is called when the script instance is being loaded.
     private void Awake()
     {
+        PlayerPrefs.GetFloat("MusicVolume", 1f);
+        PlayerPrefs.GetFloat("SfxVolume", 1f);
         // Singleton pattern implementation.
         if (Instance == null)
         {
@@ -50,26 +53,18 @@ public class AudioManager : MonoBehaviour
         foreach (Sound s in musicSounds)
         {
             if (!musicSoundsDict.ContainsKey(s.name))
-            {
                 musicSoundsDict.Add(s.name, s);
-            }
             else
-            {
                 Debug.LogWarning("Duplicate music sound name found: " + s.name);
-            }
         }
 
         // Populate the SFX dictionary.
         foreach (Sound s in sfxSounds)
         {
             if (!sfxSoundsDict.ContainsKey(s.name))
-            {
                 sfxSoundsDict.Add(s.name, s);
-            }
             else
-            {
                 Debug.LogWarning("Duplicate SFX sound name found: " + s.name);
-            }
         }
 
         // Load and apply volume settings.
@@ -78,13 +73,11 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // Subscribe to the sceneLoaded event to handle music changes.
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // Unsubscribe to prevent memory leaks.
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -92,21 +85,25 @@ public class AudioManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         string currentSceneName = scene.name;
-        // Search for a music setting that matches the loaded scene.
+        // Search for all music settings that match the loaded scene.
         foreach (var setting in sceneMusicSettings)
         {
             if (setting.sceneName == currentSceneName)
             {
-                // Stop any currently playing music and play the new track.
-                StopMusic(0.5f); // Optional fade out of old music
-                PlayMusic(setting.musicName, 1); // Play new music on layer 1
-                return; // Exit after finding the correct scene setting.
+                // Play the music on its designated layer with a crossfade.
+                // The loop continues to find all entries for the current scene.
+                PlayMusic(setting.musicName, setting.layer, 1.0f);
             }
         }
     }
 
-    // Plays a music track by its name on a specific layer.
-    public void PlayMusic(string name, int layer = 1)
+    /// <summary>
+    /// Plays a music track by name on a specific layer, with an optional crossfade.
+    /// </summary>
+    /// <param name="name">The name of the music track.</param>
+    /// <param name="layer">The layer to play on (1 or 2).</param>
+    /// <param name="fadeDuration">The duration of the crossfade.</param>
+    public void PlayMusic(string name, int layer = 1, float fadeDuration = 1.0f)
     {
         if (!musicSoundsDict.TryGetValue(name, out Sound s))
         {
@@ -115,63 +112,99 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioSource targetSource = (layer == 1) ? musicSource1 : musicSource2;
-        Coroutine activeFade = (layer == 1) ? fadeCoroutine1 : fadeCoroutine2;
-
-        // Do nothing if the target AudioSource is not assigned in the inspector.
         if (targetSource == null)
         {
             Debug.LogWarning("Music layer " + layer + " is not assigned in the AudioManager Inspector.");
             return;
         }
 
-        if (activeFade != null)
+        // If the same track is already playing on this layer, do nothing.
+        if (targetSource.isPlaying && targetSource.clip == s.clip)
         {
-            StopCoroutine(activeFade);
+            return;
         }
 
-        targetSource.volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        targetSource.clip = s.clip;
-        targetSource.Play();
+        // Stop any previous fade coroutine running on this layer.
+        if (layer == 1 && fadeCoroutine1 != null) StopCoroutine(fadeCoroutine1);
+        if (layer == 2 && fadeCoroutine2 != null) StopCoroutine(fadeCoroutine2);
+
+        // Start the crossfade and store a reference to the new coroutine.
+        Coroutine newFade = StartCoroutine(Crossfade(targetSource, s.clip, fadeDuration));
+        if (layer == 1)
+            fadeCoroutine1 = newFade;
+        else
+            fadeCoroutine2 = newFade;
     }
 
-    // Stops all music with a fade out effect.
-    public void StopMusic(float fadeDuration = 1.0f)
+    /// <summary>
+    /// Stops the music on a specific layer with a fade out.
+    /// </summary>
+    public void StopMusicOnLayer(int layer, float fadeDuration = 1.0f)
     {
-        if (musicSource1 != null && musicSource1.isPlaying)
+        AudioSource sourceToStop = (layer == 1) ? musicSource1 : musicSource2;
+        if (sourceToStop != null && sourceToStop.isPlaying)
         {
-            if (fadeCoroutine1 != null) StopCoroutine(fadeCoroutine1);
-            fadeCoroutine1 = StartCoroutine(FadeOut(musicSource1, fadeDuration));
-        }
-        if (musicSource2 != null && musicSource2.isPlaying)
-        {
-            if (fadeCoroutine2 != null) StopCoroutine(fadeCoroutine2);
-            fadeCoroutine2 = StartCoroutine(FadeOut(musicSource2, fadeDuration));
+            if (layer == 1 && fadeCoroutine1 != null) StopCoroutine(fadeCoroutine1);
+            if (layer == 2 && fadeCoroutine2 != null) StopCoroutine(fadeCoroutine2);
+
+            var fade = StartCoroutine(FadeOut(sourceToStop, fadeDuration));
+            if (layer == 1) fadeCoroutine1 = fade;
+            else fadeCoroutine2 = fade;
         }
     }
 
-    // Coroutine to gradually decrease the volume of a specific AudioSource.
+    /// <summary>
+    /// Stops all currently playing music with a fade out.
+    /// </summary>
+    public void StopAllMusic(float fadeDuration = 1.0f)
+    {
+        StopMusicOnLayer(1, fadeDuration);
+        StopMusicOnLayer(2, fadeDuration);
+    }
+
+    private IEnumerator Crossfade(AudioSource source, AudioClip newClip, float duration)
+    {
+        float masterVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+
+        // Determine the correct target volume based on which source is being used.
+        float targetVolume = (source == musicSource2) ? masterVolume / 2f : masterVolume;
+
+        // If the source is already playing, fade it out first.
+        if (source.isPlaying)
+        {
+            yield return StartCoroutine(FadeOut(source, duration / 2));
+        }
+
+        // Set up the new clip and fade it in to the correct target volume.
+        source.clip = newClip;
+        source.Play();
+        float timer = 0;
+        while (timer < duration / 2)
+        {
+            source.volume = Mathf.Lerp(0, targetVolume, timer / (duration / 2));
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        source.volume = targetVolume;
+    }
+
     private IEnumerator FadeOut(AudioSource source, float duration)
     {
         float startVolume = source.volume;
         float timer = 0;
-
         while (timer < duration)
         {
             source.volume = Mathf.Lerp(startVolume, 0, timer / duration);
             timer += Time.deltaTime;
             yield return null;
         }
-
-        source.volume = 0;
         source.Stop();
-        // Reset volume for next playback.
-        source.volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        source.clip = null;
     }
 
-    // Plays a sound effect by its name.
     public void PlaySfx(string name)
     {
-        if (sfxSource == null) return; // Don't play if source is not assigned.
+        if (sfxSource == null) return;
         if (!sfxSoundsDict.TryGetValue(name, out Sound s))
         {
             Debug.LogWarning("SFX: " + name + " not found!");
@@ -180,19 +213,18 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(s.clip);
     }
 
-    // Sets the volume for both music layers.
     public void SetMusicVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
+        // Set volume for both sources, applying the 1/5th rule for layer 2.
         if (musicSource1 != null) musicSource1.volume = volume;
-        if (musicSource2 != null) musicSource2.volume = volume;
+        if (musicSource2 != null) musicSource2.volume = volume / 2f;
 
         PlayerPrefs.SetFloat("MusicVolume", volume);
         PlayerPrefs.Save();
     }
 
-    // Sets the volume for sound effects.
     public void SetSfxVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
@@ -205,10 +237,8 @@ public class AudioManager : MonoBehaviour
     {
         float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         float sfxVolume = PlayerPrefs.GetFloat("SfxVolume", 1f);
-
-        if (musicSource1 != null) musicSource1.volume = musicVolume;
-        if (musicSource2 != null) musicSource2.volume = musicVolume;
-        if (sfxSource != null) sfxSource.volume = sfxVolume;
+        SetMusicVolume(musicVolume);
+        SetSfxVolume(sfxVolume);
     }
 }
 
@@ -220,10 +250,13 @@ public class Sound
     public AudioClip clip;
 }
 
-// A helper class to link a scene name to a music track name.
+// A helper class to link a scene name to a music track name and layer.
 [System.Serializable]
 public class SceneMusic
 {
     public string sceneName;
     public string musicName;
+    [Tooltip("Which music layer to play this on (1 or 2).")]
+    [Range(1, 2)]
+    public int layer = 1;
 }

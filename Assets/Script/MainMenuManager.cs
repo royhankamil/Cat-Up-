@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems; // Required to detect the clicked button
 using DG.Tweening;
+using UnityEditor;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -46,17 +47,16 @@ public class MainMenuManager : MonoBehaviour
 
     // --- Public Methods for UI Button Events ---
 
-    public void GoToMainMenu() // No parameter needed
+    public void GoToMainMenu()
     {
         if (isTransitioning) return;
         isTransitioning = true;
 
-        // Automatically get the transform of the button that was just clicked
         AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
 
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence();
-
+        isTransitioning = false;
         currentSequence
             .AppendCallback(() =>
             {
@@ -64,9 +64,12 @@ public class MainMenuManager : MonoBehaviour
                 MainMenu.SetActive(true);
             })
             .Append(MainMenu.GetComponent<CanvasGroup>().DOFade(1f, 1f).From(0f))
+            // 👇 HERE ARE THE MISSING GROUND ANIMATIONS 👇
+            .Join(ground1.DOLocalMove(ground1.localPosition, 2f).From(ground1.localPosition - new Vector3(0, 200, 0)).SetEase(Ease.OutCubic))
+            .Join(ground2.DOLocalMove(ground2.localPosition, 1f).From(ground2.localPosition - new Vector3(0, 200, 0)).SetEase(Ease.OutCubic))
             .OnComplete(() =>
             {
-                isTransitioning = false;
+
             });
     }
 
@@ -116,5 +119,18 @@ public class MainMenuManager : MonoBehaviour
             {
                 isTransitioning = false;
             });
+    }
+
+    public void Quit()
+    {
+        // This code will only run in a built application
+#if UNITY_STANDALONE
+            Application.Quit();
+#endif
+
+        // This code will only run in the Unity Editor
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#endif
     }
 }
