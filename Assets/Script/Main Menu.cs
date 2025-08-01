@@ -24,7 +24,7 @@ public class MainMenuAnimator : MonoBehaviour
 {
     [Header("UI Element Assignments")]
     [Tooltip("Assign the RectTransform of the logo you want to animate.")]
-    public RectTransform logoTransform;
+    public RectTransform logoTransform, logoTransform2;
 
     [Tooltip("Assign the TextMeshProUGUI element for the 'Press to Start' text.")]
     public TextMeshProUGUI startText;
@@ -83,6 +83,13 @@ public class MainMenuAnimator : MonoBehaviour
         logoTransform.DOAnchorPosY(initialLogoPosition.y + floatHeight, duration)
             .SetEase(Ease.InOutSine) // Use a smooth sine wave easing for a natural float.
             .SetLoops(-1, LoopType.Yoyo); // Loop indefinitely, moving back and forth (Yoyo).
+    }
+
+    public void animateStartMenuLogo()
+    {
+        logoTransform2.DOAnchorPosY(logoTransform2.transform.localPosition.y + 30, 2f)
+        .SetEase(Ease.InOutSine) // Use a smooth sine wave easing for a natural float.
+        .SetLoops(-1, LoopType.Yoyo); // Loop indefinitely, moving back and forth (Yoyo).
     }
 
     /// <summary>
