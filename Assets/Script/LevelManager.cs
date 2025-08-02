@@ -6,8 +6,12 @@ public class LevelManager : MonoBehaviour
 {
     public Button[] buttons;
 
-    private void Start() 
-    {   
+    private void Start()
+    {
+        // Define the color for disabled buttons
+        Color disabledColor;
+        ColorUtility.TryParseHtmlString("#7E7E7E", out disabledColor);
+
         int level = PlayerPrefs.GetInt("level", 1);
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -18,12 +22,21 @@ public class LevelManager : MonoBehaviour
             else
             {
                 buttons[i].interactable = false;
+
+                // Get the button's current color block
+                ColorBlock cb = buttons[i].colors;
+                // Set the disabled color
+                cb.disabledColor = disabledColor;
+                // Apply the new color block to the button
+                buttons[i].colors = cb;
             }
         }
     }
 
     public void loadScene(int index)
     {
-        LoadingManager.Instance.LoadScene(index);
+        // Assuming you have a LoadingManager script
+        // LoadingManager.Instance.LoadScene(index);
+        SceneManager.LoadScene(index); // Standard way to load a scene
     }
 }

@@ -57,7 +57,7 @@ public class MainMenuManager : MonoBehaviour
     /// Plays a punch scale animation on a transform to provide button click feedback.
     /// </summary>
     /// <param name="buttonTransform">The transform of the button to animate.</param>
-    private void AnimateButtonClick(Transform buttonTransform)
+    public void AnimateButtonClick(Transform buttonTransform)
     {
         // Kill any existing animations on this transform to prevent stacking effects.
         // The 'true' parameter completes the tween immediately, resetting the scale.
@@ -72,6 +72,7 @@ public class MainMenuManager : MonoBehaviour
             vibrato: 5,
             elasticity: 1);
     }
+    
 
     // --- Public Methods for UI Button OnClick Events ---
 
