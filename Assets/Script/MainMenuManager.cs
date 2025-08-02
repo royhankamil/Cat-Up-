@@ -24,7 +24,7 @@ public class MainMenuManager : MonoBehaviour
     // Tracks the last button clicked to prevent spamming the same transition.
     private GameObject lastClickedButton = null;
     // The currently active transition sequence.
-    private Sequence currentSequence, seq;
+    private Sequence currentSequence;
 
     private void Start()
     {
@@ -59,6 +59,10 @@ public class MainMenuManager : MonoBehaviour
     /// <param name="buttonTransform">The transform of the button to animate.</param>
     private void AnimateButtonClick(Transform buttonTransform)
     {
+        // Kill any existing animations on this transform to prevent stacking effects.
+        // The 'true' parameter completes the tween immediately, resetting the scale.
+        buttonTransform.DOKill(true);
+
         // Example of playing a sound effect. Uncomment if you have an AudioManager.
         // AudioManager.Instance.PlaySfx("Button Click");
 
@@ -83,10 +87,10 @@ public class MainMenuManager : MonoBehaviour
         AnimateButtonClick(clickedButton.transform);
 
         // Kill any previously running sequence before starting a new one.
-        seq?.Kill();
-        seq = DOTween.Sequence();
+        currentSequence?.Kill();
+        currentSequence = DOTween.Sequence();
 
-        seq
+        currentSequence
             .AppendCallback(() =>
             {
                 StartMenu.SetActive(false);
@@ -118,11 +122,9 @@ public class MainMenuManager : MonoBehaviour
         currentSequence = DOTween.Sequence();
 
         currentSequence
-            .Append(StartMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
-            .Join(HomeMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f)) // Fade out home menu as well
+            .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f)) // Fade out home menu
             .AppendCallback(() =>
             {
-                StartMenu.SetActive(false);
                 HomeMenu.SetActive(false);
                 LevelMenu.SetActive(true);
                 LevelMenu.GetComponent<CanvasGroup>().alpha = 0; // Ensure it starts transparent
