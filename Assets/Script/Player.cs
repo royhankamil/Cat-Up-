@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
     }
 
+
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -83,10 +84,11 @@ public class Player : MonoBehaviour
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             return;
         }
-        
+
         HandleMovement();
         HandleJump();
         HandleBetterJump();
+        HandleRotation();
     }
 
     // --- Logic Handling Methods ---
@@ -94,6 +96,18 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+    }
+
+    private void HandleRotation()
+    {
+        float z = transform.rotation.eulerAngles.z;
+        
+        // Convert 0–360 ke -180 – 180
+        if (z > 180f) z -= 360f;
+
+        z = Mathf.Clamp(z, -45f, 45f); // Batas rotasi
+
+        transform.rotation = Quaternion.Euler(0, 0, z);
     }
     
     private void HandleSpriteFlip()
