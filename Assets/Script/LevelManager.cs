@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public Button[] buttons;
 
-    private void Start()
+    public void levelOpened()
     {
         // Define the color for disabled buttons
         Color disabledColor;
@@ -36,7 +36,6 @@ public class LevelManager : MonoBehaviour
     public void loadScene(int index)
     {
         // Assuming you have a LoadingManager script
-        // LoadingManager.Instance.LoadScene(index);
-        SceneManager.LoadScene(index); // Standard way to load a scene
+        LoadingManager.Instance.LoadScene(index);
     }
 }
