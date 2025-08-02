@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.5724, y: -2.9941, z: -7.5}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -198,6 +198,9 @@ MonoBehaviour:
   rotateLeftAction: {fileID: -980147981375395284, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   rotateRightAction: {fileID: 2694197372498568143, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   scrollAction: {fileID: 6240969308177333660, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  mass: 1
+  dragSmoothSpeed: 15
+  keyRotationSpeed: 400
   scrollRotationSpeed: 300
   objectType: 0
 --- !u!114 &6911195057206917432
