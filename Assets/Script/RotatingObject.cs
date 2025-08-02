@@ -10,6 +10,7 @@ public class RotatingObject : MonoBehaviour
     public InputActionReference rotateLeftAction;
     public InputActionReference rotateRightAction;
     public InputActionReference scrollAction;
+    public float mass = 1f;
 
     // --- SMOOTHNESS: Configurable speeds for smoothing ---
     [Header("Smoothing Settings")]
@@ -71,6 +72,7 @@ public class RotatingObject : MonoBehaviour
         {
             if (gameObject.layer == LayerMask.NameToLayer("DraggingItem"))
             {
+                GetComponent<Rigidbody2D>().mass = mass;
                 gameObject.layer = LayerMask.NameToLayer("Item");
             }
             return;
