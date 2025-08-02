@@ -3,6 +3,10 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    [Header("Wall Check")]
+    public float wallCheckDistance = 0.1f;
+    public LayerMask wallLayer;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float jumpForce = 7f;
@@ -94,9 +98,17 @@ public class Player : MonoBehaviour
     // --- Logic Handling Methods ---
 
     private void HandleMovement()
+{
+    // Cegah nempel di dinding saat lompat dan menabrak tembok
+    if (!isGrounded && IsTouchingWall())
+    {
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+    }
+    else
     {
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
+}
 
     private void HandleRotation()
     {
@@ -121,6 +133,14 @@ public class Player : MonoBehaviour
             spriteRenderer.flipX = true;
         }
     }
+    private bool IsTouchingWall()
+    {
+        Vector2 direction = moveInput.x > 0 ? Vector2.right : Vector2.left;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, wallCheckDistance, wallLayer);
+        return hit.collider != null;
+    }
+
+    
 
     private void HandleJump()
     {
@@ -129,7 +149,7 @@ public class Player : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
         // Consume the trigger so it only happens once per press
-        jumpTriggered = false; 
+        jumpTriggered = false;
     }
 
     private void HandleBetterJump()
