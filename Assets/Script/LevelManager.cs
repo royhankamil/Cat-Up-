@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void loadScene(string index)
+    public void loadScene(int index)
     {
         LoadingManager.Instance.LoadScene(index);
     }
