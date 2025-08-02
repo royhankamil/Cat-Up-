@@ -155,12 +155,12 @@ MonoBehaviour:
   loadingScreenPanel: {fileID: 429828947}
   loadingText: {fileID: 1952605548}
   loadingMessages:
-  - Shot for the moon, if you miss, you'll land among the stars.
-  - Nothing is impossible, if you keep trying!
+  - Shot for the moon, even if you miss, you'll land among the stars.
+  - Its better to fail than never know!
   - This loading screen is part of the experience.
   - Doubt kills more dreams than failure.
   - The brave do not live forever, but the cautious do not live at all.
-  - Its better to fail than never know!
+  - Nothing is impossible, if you keep trying!
   - Peace is found when you stop arguing with reality.
   fadeDuration: 0.5
   minLoadingTime: 4.5
