@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
     public Button[] buttons;
 
     private void Start() 
-    {
+    {   
         int level = PlayerPrefs.GetInt("level", 1);
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void loadScene(int index)
+    public void loadScene(string index)
     {
         LoadingManager.Instance.LoadScene(index);
     }
