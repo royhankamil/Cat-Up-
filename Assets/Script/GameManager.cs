@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UI; // <-- Make sure you have this line
 
 public class GameManager : MonoBehaviour
 {
@@ -35,7 +35,8 @@ public class GameManager : MonoBehaviour
         LoadingManager.Instance.FastLoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void OnPlayPress()
+    // Modified method to accept the button that was pressed
+    public void OnPlayPress(Button playButton)
     {
         IsPlay = !IsPlay;
         Debug.Log("IsPlay: " + IsPlay);
@@ -46,6 +47,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            // Disable the button as soon as play mode starts
+            if (playButton != null)
+            {
+                playButton.gameObject.SetActive(false);
+            }
+
             rigidbodies = GameObject.FindGameObjectsWithTag("Object").Select(obj => obj.GetComponent<Rigidbody2D>()).ToList();
 
             foreach (var rb in rigidbodies)
@@ -56,17 +63,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
-
-        // if (IsPlay)
-        // {
-        //     Time.timeScale = 0f;
-        // }
-        // else
-        // {
-        //     Time.timeScale = 1f;
-        // }
-
     }
 
     public void OnNextLevel()
@@ -74,5 +70,4 @@ public class GameManager : MonoBehaviour
         IsPlay = false;
         LoadingManager.Instance.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-    
 }
