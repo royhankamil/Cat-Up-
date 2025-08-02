@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // Required for scene management
-using TMPro;                       // Required for TextMeshPro
-using DG.Tweening;                 // Required for DOTween
+using TMPro;                   // Required for TextMeshPro
+using DG.Tweening;               // Required for DOTween
 using System.Collections;
 
 // Place this script on a persistent manager GameObject.
@@ -96,6 +96,26 @@ public class LoadingManager : MonoBehaviour
             return;
         }
         StartCoroutine(DoLoadingSequence(sceneIndex));
+    }
+
+    /// <summary>
+    /// Loads a scene instantly by its name without showing the loading screen.
+    /// Example usage: LoadingManager.Instance.FastLoadScene("MainMenu");
+    /// </summary>
+    /// <param name="sceneName">The name of the scene to load.</param>
+    public void FastLoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    /// <summary>
+    /// Loads a scene instantly by its build index without showing the loading screen.
+    /// Example usage: LoadingManager.Instance.FastLoadScene(0);
+    /// </summary>
+    /// <param name="sceneIndex">The build index of the scene to load.</param>
+    public void FastLoadScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
 
     /// <summary>

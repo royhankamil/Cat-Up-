@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     public void OnReset()
     {
-        LoadingManager.Instance.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        LoadingManager.Instance.FastLoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void OnPlayPress()
