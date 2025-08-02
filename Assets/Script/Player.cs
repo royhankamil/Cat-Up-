@@ -29,9 +29,9 @@ public class Player : MonoBehaviour
     // Input state variables
     private Vector2 moveInput;
     private bool isJumpHeld = false;
-    private bool jumpTriggered = false; 
+    private bool jumpTriggered = false;
     public bool sitTriggered { get; private set; } = false;
-    
+
     // State tracking variables
     private bool isGrounded;
     private float sitTimer = 0f;
@@ -46,12 +46,20 @@ public class Player : MonoBehaviour
     // --- Input System Events ---
     public void OnMove(InputAction.CallbackContext context)
     {
+        // ADDED: Prevent input reading if game is not in play state
+        if (!GameManager.IsPlay)
+        {
+            moveInput = Vector2.zero; // Clear movement input
+            return;
+        }
         moveInput = context.ReadValue<Vector2>();
     }
 
-
     public void OnJump(InputAction.CallbackContext context)
     {
+        // ADDED: Prevent input reading if game is not in play state
+        if (!GameManager.IsPlay) return;
+
         if (context.started)
         {
             jumpTriggered = true;
@@ -66,6 +74,9 @@ public class Player : MonoBehaviour
 
     public void OnSit(InputAction.CallbackContext context)
     {
+        // ADDED: Prevent input reading if game is not in play state
+        if (!GameManager.IsPlay) return;
+
         if (context.started)
         {
             sitTriggered = true;
@@ -74,13 +85,24 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        // ADDED: Game State Check. Stops animation logic.
+        if (!GameManager.IsPlay) return;
+
         HandleSpriteFlip();
         HandleAnimationsAndStates();
     }
 
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer); 
+        // ADDED: Game State Check. Halts all physics-based movement.
+        if (!GameManager.IsPlay)
+        {
+            rb.linearVelocity = Vector2.zero; // Instantly stop the player
+            anim.SetBool("isWalk", false); // Ensure walk animation is off
+            return;
+        }
+
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         // If sitting or sleeping, stop horizontal movement.
         if (anim.GetBool("isSit") || anim.GetBool("isSleep"))
@@ -98,22 +120,22 @@ public class Player : MonoBehaviour
     // --- Logic Handling Methods ---
 
     private void HandleMovement()
-{
-    // Cegah nempel di dinding saat lompat dan menabrak tembok
-    if (!isGrounded && IsTouchingWall())
     {
-        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        // Cegah nempel di dinding saat lompat dan menabrak tembok
+        if (!isGrounded && IsTouchingWall())
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        }
     }
-    else
-    {
-        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-    }
-}
 
     private void HandleRotation()
     {
         float z = transform.rotation.eulerAngles.z;
-        
+
         // Convert 0–360 ke -180 – 180
         if (z > 180f) z -= 360f;
 
@@ -121,7 +143,7 @@ public class Player : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, 0, z);
     }
-    
+
     private void HandleSpriteFlip()
     {
         if (moveInput.x > 0.1f)
@@ -139,8 +161,6 @@ public class Player : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, wallCheckDistance, wallLayer);
         return hit.collider != null;
     }
-
-    
 
     private void HandleJump()
     {
@@ -168,7 +188,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // CHANGED: Removed the wake-up delay for immediate response
     private void HandleAnimationsAndStates()
     {
         // --- Sit & Sleep Logic ---
@@ -199,7 +218,7 @@ public class Player : MonoBehaviour
                 anim.SetBool("isSleep", true);
             }
         }
-        
+
         // --- Breaking Out of Sit/Sleep with Movement ---
         // If we move or jump, we should stand up.
         bool shouldBreakSit = (Mathf.Abs(moveInput.x) > 0.1f) || (jumpTriggered && isGrounded);
@@ -236,7 +255,7 @@ public class Player : MonoBehaviour
             anim.SetBool("isFall", false);
         }
     }
-    
+
     void OnDrawGizmosSelected()
     {
         if (groundCheck != null)

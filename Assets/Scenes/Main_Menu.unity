@@ -3400,13 +3400,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: cea408d11c15d9240a9888b3499300ac, type: 3}
     - {fileID: 8300000, guid: 64b9bb1283132a843b8995a7ee972bf1, type: 3}
     - {fileID: 8300000, guid: 834a6509954ea434f9e8de96b4068a30, type: 3}
-    chance: 0.4
+    chance: 0.5
     volume: 0.6
   - name: SitDown
     clips:
     - {fileID: 8300000, guid: b04e9b9ac5614c643b40af14c8ba81bf, type: 3}
     - {fileID: 8300000, guid: 22c2d05c1aa78734ba79cf6017538be1, type: 3}
-    chance: 0.4
+    chance: 0.5
     volume: 0.6
   - name: StandUp
     clips:
@@ -3422,6 +3422,11 @@ MonoBehaviour:
   - name: Footstep
     clips:
     - {fileID: 8300000, guid: e3f55a1bd6bdf2a4580f34884acea245, type: 3}
+    chance: 1
+    volume: 0.4
+  - name: Win
+    clips:
+    - {fileID: 8300000, guid: 87686749f493aab4aa1b193e922a7ff9, type: 3}
     chance: 1
     volume: 0.4
   sceneMusicSettings:

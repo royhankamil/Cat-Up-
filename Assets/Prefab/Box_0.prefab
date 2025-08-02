@@ -183,7 +183,7 @@ MonoBehaviour:
   scrollAction: {fileID: 6240969308177333660, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   mass: 15
   dragSmoothSpeed: 15
-  keyRotationSpeed: 400
+  keyRotationSpeed: 150
   scrollRotationSpeed: 300
   objectType: 0
 --- !u!114 &6911195057206917432

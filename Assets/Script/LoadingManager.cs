@@ -141,7 +141,7 @@ public class LoadingManager : MonoBehaviour
     {
         // --- 1. Activate and Fade In ---
         yield return StartCoroutine(FadeInLoadingScreen());
-
+        
         // --- 2. Load Scene Asynchronously and wait for completion ---
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
         asyncOperation.allowSceneActivation = false;
