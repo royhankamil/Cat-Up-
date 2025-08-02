@@ -16,6 +16,6 @@ public class VideoSceneSwitcher : MonoBehaviour
     void OnVideoEnd(VideoPlayer vp)
     {
         // Pindah ke scene berikutnya
-        SceneManager.LoadScene(1);
+        LoadingManager.Instance.LoadScene("Main_Menu");
     }
 }

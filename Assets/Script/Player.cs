@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer); 
 
         // If sitting or sleeping, stop horizontal movement.
         if (anim.GetBool("isSit") || anim.GetBool("isSleep"))

@@ -3,6 +3,11 @@ using UnityEngine.EventSystems; // Required to detect the clicked button
 using DG.Tweening;
 using UnityEditor;
 
+/// <summary>
+/// Manages the main menu UI, handling transitions between different menu panels
+/// with DOTween animations. This version allows new transitions to interrupt
+/// any currently running animations.
+/// </summary>
 public class MainMenuManager : MonoBehaviour
 {
     [Header("Menus & Canvases")]
@@ -16,13 +21,18 @@ public class MainMenuManager : MonoBehaviour
     public Transform ground1;
     public Transform ground2;
 
-    private bool isTransitioning = false;
-    private Sequence currentSequence;
+    // Tracks the last button clicked to prevent spamming the same transition.
+    private GameObject lastClickedButton = null;
+    // The currently active transition sequence.
+    private Sequence currentSequence, seq;
 
     private void Start()
     {
+        // Initialize DOTween
         DOTween.Init();
-        // Loop through all menus and ensure they have a CanvasGroup component for fading.
+
+        // Ensure all menu GameObjects have a CanvasGroup for fading animations.
+        // This is a good practice for robustness.
         foreach (var menu in new[] { StartMenu, MainMenu, SettingMenu, HomeMenu, LevelMenu })
         {
             if (menu != null && menu.GetComponent<CanvasGroup>() == null)
@@ -32,19 +42,26 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// OnDestroy is called when the object is destroyed.
+    /// Kills any active DOTween sequences to prevent memory leaks or errors
+    /// when the scene changes or the object is destroyed.
+    /// </summary>
     private void OnDestroy()
     {
-        // Kill any active DOTween sequences to prevent memory leaks when the object is destroyed.
+        // Kill any active DOTween sequences to prevent memory leaks.
         currentSequence?.Kill();
     }
 
     /// <summary>
-    /// Plays a punch scale animation on a transform.
+    /// Plays a punch scale animation on a transform to provide button click feedback.
     /// </summary>
     /// <param name="buttonTransform">The transform of the button to animate.</param>
     private void AnimateButtonClick(Transform buttonTransform)
     {
-        // AudioManager.Instance.PlaySfx("Button Click"); // Assuming you have an AudioManager
+        // Example of playing a sound effect. Uncomment if you have an AudioManager.
+        // AudioManager.Instance.PlaySfx("Button Click");
+
         buttonTransform.DOPunchScale(
             punch: new Vector3(0.15f, 0.15f, 0.15f),
             duration: 0.3f,
@@ -52,22 +69,24 @@ public class MainMenuManager : MonoBehaviour
             elasticity: 1);
     }
 
-    // --- Public Methods for UI Button Events ---
+    // --- Public Methods for UI Button OnClick Events ---
 
     /// <summary>
     /// Transitions from the Start Menu to the Main Menu.
     /// </summary>
     public void GoToMainMenu()
     {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
 
-        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+        AnimateButtonClick(clickedButton.transform);
 
-        currentSequence?.Kill();
-        currentSequence = DOTween.Sequence();
+        // Kill any previously running sequence before starting a new one.
+        seq?.Kill();
+        seq = DOTween.Sequence();
 
-        currentSequence
+        seq
             .AppendCallback(() =>
             {
                 StartMenu.SetActive(false);
@@ -79,75 +98,69 @@ public class MainMenuManager : MonoBehaviour
             .Join(ground2.DOLocalMove(ground2.localPosition, 1f).From(ground2.localPosition - new Vector3(0, 200, 0)).SetEase(Ease.OutCubic))
             .OnComplete(() =>
             {
-                isTransitioning = false;
+                lastClickedButton = null;
             });
     }
 
     /// <summary>
-    /// Transitions from the Start Menu to the Level Selection Menu.
-    /// Assign this to your Start Button's OnClick event in the Unity Inspector.
+    /// Transitions to the Level Selection Menu.
     /// </summary>
-    /// <param name="buttonTransform">The transform of the clicked button, passed from the OnClick event.</param>
-    public void GoToLevelMenu(Transform buttonTransform)
+    public void GoToLevelMenu()
     {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
 
-        // Animate the specific button that was clicked.
-        AnimateButtonClick(buttonTransform);
+        AnimateButtonClick(clickedButton.transform);
 
+        // Kill any previously running sequence before starting a new one.
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence();
 
         currentSequence
-            // Fade out the start menu
             .Append(StartMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
-            // Also fade out the home menu if it's active
-            .Join(HomeMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
+            .Join(HomeMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f)) // Fade out home menu as well
             .AppendCallback(() =>
             {
-                // Deactivate the old menus and activate the new one
                 StartMenu.SetActive(false);
-                HomeMenu.SetActive(false); // Explicitly deactivate it
+                HomeMenu.SetActive(false);
                 LevelMenu.SetActive(true);
                 LevelMenu.GetComponent<CanvasGroup>().alpha = 0; // Ensure it starts transparent
             })
-            // Fade in the new level menu
             .Append(LevelMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f))
             .OnComplete(() =>
             {
-                isTransitioning = false;
+                lastClickedButton = null;
             });
     }
 
     /// <summary>
-    /// Transitions from the Level Menu back to the Home/Start Menu.
+    /// Transitions from the Level Menu back to the Home Menu.
     /// </summary>
     public void GoToHomeFromLevel()
     {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
 
-        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+        AnimateButtonClick(clickedButton.transform);
 
+        // Kill any previously running sequence before starting a new one.
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence();
 
         currentSequence
-            // Fade out the level menu
             .Append(LevelMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
             .AppendCallback(() =>
             {
-                // Deactivate the level menu and activate the home menu
                 LevelMenu.SetActive(false);
                 HomeMenu.SetActive(true);
                 HomeMenu.GetComponent<CanvasGroup>().alpha = 0;
             })
-            // Fade in the home menu
             .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f))
             .OnComplete(() =>
             {
-                isTransitioning = false;
+                lastClickedButton = null;
             });
     }
 
@@ -157,11 +170,13 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void GoToSettings()
     {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
 
-        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+        AnimateButtonClick(clickedButton.transform);
 
+        // Kill any previously running sequence before starting a new one.
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence();
 
@@ -176,7 +191,7 @@ public class MainMenuManager : MonoBehaviour
             .Append(SettingMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f))
             .OnComplete(() =>
             {
-                isTransitioning = false;
+                lastClickedButton = null;
             });
     }
 
@@ -185,11 +200,13 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void GoToHome()
     {
-        if (isTransitioning) return;
-        isTransitioning = true;
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
 
-        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+        AnimateButtonClick(clickedButton.transform);
 
+        // Kill any previously running sequence before starting a new one.
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence();
 
@@ -204,8 +221,24 @@ public class MainMenuManager : MonoBehaviour
             .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f))
             .OnComplete(() =>
             {
-                isTransitioning = false;
+                lastClickedButton = null;
             });
+    }
+
+    /// <summary>
+    /// Loads a level using the LoadingManager.
+    /// </summary>
+    /// <param name="levelIndex">The build index of the level to load.</param>
+    public void StartLevel(int levelIndex)
+    {
+        // Prevent starting a level load if a menu transition is happening.
+        if (lastClickedButton != null) return;
+
+        AnimateButtonClick(EventSystem.current.currentSelectedGameObject.transform);
+
+        // NOTE: The following line is commented out because the LoadingManager script
+        // was not provided. Uncomment it if you have this class in your project.
+        // LoadingManager.Instance.LoadScene(levelIndex);
     }
 
     /// <summary>
@@ -214,14 +247,13 @@ public class MainMenuManager : MonoBehaviour
     public void Quit(Transform transform)
     {
         AnimateButtonClick(transform);
-        // This code will only run in a built application
-#if UNITY_STANDALONE
-        Application.Quit();
-#endif
 
-        // This code will only run in the Unity Editor
 #if UNITY_EDITOR
+        // This code will only run in the Unity Editor
         EditorApplication.isPlaying = false;
+#elif UNITY_STANDALONE
+        // This code will only run in a built application
+        Application.Quit();
 #endif
     }
 }

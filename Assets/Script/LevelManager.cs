@@ -24,6 +24,6 @@ public class LevelManager : MonoBehaviour
 
     public void loadScene(int index)
     {
-        SceneManager.LoadScene(index);
+        LoadingManager.Instance.LoadScene(index);
     }
 }
