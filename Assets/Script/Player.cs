@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     // Private component references
     private Rigidbody2D rb;
-    private Animator anim;
+    public Animator anim;
     private SpriteRenderer spriteRenderer;
 
     // Input state variables

@@ -8,19 +8,18 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static bool IsPlay { get; private set; } = false;
+    public GameObject winUI;
     // [SerializeField] private TextMeshProUGUI playText;
     // [SerializeField] private Sprite playSprite, resetSprite;
     // [SerializeField] private Image playImage;
 
     private List<Rigidbody2D> rigidbodies = new List<Rigidbody2D>();
-    void Start()
-    {
 
-    }
-
-    void Update()
+    public void win()
     {
-        // Debug.Log("rdttfcg");
+        winUI.SetActive(true); // Reset sit trigger after use
+        PlayerPrefs.SetInt("Level", SceneManager.GetActiveScene().buildIndex);
+        
     }
 
     public void Exit()
