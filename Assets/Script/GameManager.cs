@@ -25,12 +25,12 @@ public class GameManager : MonoBehaviour
 
     public void Exit()
     {
-        SceneManager.LoadScene(1);
+        LoadingManager.Instance.LoadScene(1);
     }
 
     public void OnReset()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        LoadingManager.Instance.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void OnPlayPress()
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         // playImage.sprite = IsPlay ? resetSprite : playSprite;
         if (!IsPlay)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            LoadingManager.Instance.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else
         {
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 
     public void OnNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        LoadingManager.Instance.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     
 }
