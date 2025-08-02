@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
 {
     public static bool IsPlay { get; private set; } = false;
     // [SerializeField] private TextMeshProUGUI playText;
-    [SerializeField] private Sprite playSprite, resetSprite;
-    [SerializeField] private Image playImage;
+    // [SerializeField] private Sprite playSprite, resetSprite;
+    // [SerializeField] private Image playImage;
 
     private List<Rigidbody2D> rigidbodies = new List<Rigidbody2D>();
     void Start()
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     {
         IsPlay = !IsPlay;
         Debug.Log("IsPlay: " + IsPlay);
-        playImage.sprite = IsPlay ? resetSprite : playSprite;
+        // playImage.sprite = IsPlay ? resetSprite : playSprite;
         if (!IsPlay)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
