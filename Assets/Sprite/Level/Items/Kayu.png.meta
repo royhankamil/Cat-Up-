@@ -113,13 +113,13 @@ TextureImporter:
       name: Kayu_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 26
-        width: 54
-        height: 14
+        x: 7
+        y: 28
+        width: 50
+        height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 1, z: 1, w: 1}
       customData: 
       outline: []
       physicsShape: []
