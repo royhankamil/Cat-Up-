@@ -2190,6 +2190,7 @@ MonoBehaviour:
   nextButton: {fileID: 3357595084411122847}
   previousButton: {fileID: 5918076550500464030}
   closeButton: {fileID: 5918076550500464030}
+  disabledButtonColor: {r: 0.7, g: 0.7, b: 0.7, a: 0.5}
 --- !u!1 &4823627593125710457
 GameObject:
   m_ObjectHideFlags: 0
