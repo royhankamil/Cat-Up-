@@ -1,42 +1,55 @@
 using UnityEngine;
 using Unity.Cinemachine;
 
-// This script should be attached to the same GameObject as an ORTHOGRAPHIC CinemachineVirtualCamera.
+// This script should be attached to the same GameObject as a CinemachineVirtualCamera.
 [RequireComponent(typeof(CinemachineCamera))]
 public class HorizontalOrthoSizeLocker : MonoBehaviour
 {
-    private CinemachineCamera vcam;
-
     [Tooltip("The desired constant horizontal width for the camera's view.")]
     [SerializeField] private float horizontalWidth = 20f;
 
-    // Cache the vcam component
-    void Awake()
+    private CinemachineCamera vcam;
+    private CinemachineBrain brain;
+
+    void Start()
     {
         vcam = GetComponent<CinemachineCamera>();
-        if (!vcam.Lens.Orthographic)
+
+        // Find the brain using the modern, recommended method
+        brain = FindFirstObjectByType<CinemachineBrain>();
+
+        if (brain == null)
         {
-            Debug.LogWarning("HorizontalOrthoSizeLocker requires the CinemachineCamera to be in Orthographic mode.", this);
+            Debug.LogError("A CinemachineBrain is required in the scene but was not found.", this);
+            enabled = false; // Disable the script if the brain is missing.
+            return;
+        }
+
+    }
+
+    private void LateUpdate()
+    {
+        // CHANGED: This is the corrected check for the active camera
+        if (brain != null && brain.ActiveVirtualCamera == vcam)
+        {
+            UpdateOrthoSize();
         }
     }
 
-    // We use LateUpdate to ensure the size is set after all other camera updates.
-    void LateUpdate()
+    void UpdateOrthoSize()
     {
-        // Ensure the camera is orthographic before proceeding
-        if (!vcam.Lens.Orthographic) return;
+        // The brain reference is checked in LateUpdate, so we can safely use it here.
+        Camera outputCamera = brain.OutputCamera;
+        if (outputCamera == null) return;
 
-        // Get the current aspect ratio of the screen.
-        float currentAspect = (float)Screen.width / Screen.height;
+        float screenHeight = outputCamera.pixelHeight;
+        float screenWidth = outputCamera.pixelWidth;
 
-        // Avoid division by zero
+        if (screenHeight <= 0) return;
+
+        float currentAspect = screenWidth / screenHeight;
         if (currentAspect <= 0) return;
 
-        // Calculate the new orthographic size.
-        // Unity's OrthographicSize is half of the vertical screen height.
-        // We calculate the required vertical size to maintain a constant horizontal width.
-        float newOrthoSize = horizontalWidth / (2f * currentAspect);
-
-        vcam.Lens.OrthographicSize = newOrthoSize;
+        vcam.Lens.OrthographicSize = horizontalWidth / (2f * currentAspect);
     }
 }
