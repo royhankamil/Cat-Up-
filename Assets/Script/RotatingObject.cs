@@ -70,9 +70,9 @@ public class RotatingObject : MonoBehaviour
     {
         if (GameManager.IsPlay)
         {
+            GetComponent<Rigidbody2D>().mass = mass;
             if (gameObject.layer == LayerMask.NameToLayer("DraggingItem"))
             {
-                GetComponent<Rigidbody2D>().mass = mass;
                 gameObject.layer = LayerMask.NameToLayer("Item");
             }
             return;
