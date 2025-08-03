@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 53108834}
   - component: {fileID: 53108833}
   - component: {fileID: 53108832}
+  - component: {fileID: 53108838}
   m_Layer: 5
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -259,6 +260,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &53108838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53108831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0e2a54f445aad49b167f6d63b468f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursors:
+  - name: Normal
+    texture: {fileID: 2800000, guid: b32bd153c4b93f641a1c9d13c9bbde79, type: 3}
+    hotspot: {x: 0, y: 0}
+  - name: Click
+    texture: {fileID: 2800000, guid: 7a14d9a092f52fe438335f5e50a07e7e, type: 3}
+    hotspot: {x: 0, y: 0}
+  - name: Hand Cursor
+    texture: {fileID: 2800000, guid: 1f090d013934fba4495fb013150677b9, type: 3}
+    hotspot: {x: 0, y: 0}
+  - name: Holding Cursor
+    texture: {fileID: 2800000, guid: a45030b7b016777499c11e443b22354d, type: 3}
+    hotspot: {x: 0, y: 0}
+  - name: Pointing Cursor
+    texture: {fileID: 2800000, guid: 4d50422c6abc8e14ebc0b97003d6986f, type: 3}
+    hotspot: {x: 0, y: 0}
 --- !u!1 &149438601
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +596,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &429828948
 RectTransform:
   m_ObjectHideFlags: 0
@@ -847,7 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 8034f5f5281ae104c8107266d15fd8f0, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
