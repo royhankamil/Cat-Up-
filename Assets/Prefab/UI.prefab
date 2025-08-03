@@ -2187,7 +2187,6 @@ MonoBehaviour:
   - {fileID: 4962247292393001969}
   - {fileID: 2122274587770520855}
   tutorialContainer: {fileID: 4806015044392800093}
-  clickEffector: {fileID: 2100870498938609106}
   nextButton: {fileID: 3357595084411122847}
   previousButton: {fileID: 5918076550500464030}
   closeButton: {fileID: 5918076550500464030}
@@ -2610,7 +2609,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 21300000, guid: 7f829f1c37a36024488d97441ffcf52f, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 24fb9c0f91b0e8f47b4fc1713ad6af24, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
