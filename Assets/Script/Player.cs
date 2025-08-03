@@ -191,31 +191,26 @@ public class Player : MonoBehaviour
     private void HandleAnimationsAndStates()
     {
         // --- Sit & Sleep Logic ---
-        // If 'S' was just pressed, we toggle the sit state.
-        if (sitTriggered)
+        // If 'S' was pressed, we are grounded, not moving, AND not already sitting/sleeping...
+        if (sitTriggered && isGrounded && Mathf.Abs(moveInput.x) < 0.1f && !anim.GetBool("isSit"))
         {
-            // If we are already sitting or sleeping, stand up.
-            if (anim.GetBool("isSit") || anim.GetBool("isSleep"))
-            {
-                anim.SetBool("isSit", false);
-                anim.SetBool("isSleep", false);
-                sitTimer = 0f;
-            }
-            // Otherwise, if we are on the ground and not moving, sit down.
-            else if (isGrounded && Mathf.Abs(moveInput.x) < 0.1f)
-            {
-                anim.SetBool("isSit", true);
-                AudioManager.Instance.PlaySfx("SitDown");
-            }
+            // ...then we start sitting.
+            anim.SetBool("isSit", true);
+            sitTimer = 0f; // Reset timer when we begin sitting.
+            AudioManager.Instance.PlaySfx("SitDown");
         }
+        // Always consume the trigger after checking it.
         sitTriggered = false;
 
+        // If we are sitting, increment the timer to eventually fall asleep.
         if (anim.GetBool("isSit"))
         {
             sitTimer += Time.deltaTime;
             if (sitTimer > timeToSleep)
             {
                 anim.SetBool("isSleep", true);
+                // We can optionally set isSit to false if sleep is a completely separate state.
+                // For now, keeping it true is fine.
             }
         }
 
@@ -234,6 +229,7 @@ public class Player : MonoBehaviour
         }
 
         // --- Walk, Jump, and Fall Animations ---
+        // (The rest of your method remains the same)
         anim.SetBool("isWalk", Mathf.Abs(moveInput.x) > 0.1f && isGrounded);
 
         if (!isGrounded)

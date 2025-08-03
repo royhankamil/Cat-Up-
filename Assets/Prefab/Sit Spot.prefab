@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.22, y: 0.0849, z: 0}
-  m_LocalScale: {x: 3.2575963, y: 3.2575963, z: 3.2575963}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -124,8 +124,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.24046879}
-  m_Radius: 0.33121148
+  m_Offset: {x: 0, y: 2.8667166}
+  m_Radius: 3.3585105
 --- !u!95 &865923481519280889
 Animator:
   serializedVersion: 7
@@ -161,3 +161,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winUI: {fileID: 0}
+  floatDistance: 0.2
+  floatDuration: 3

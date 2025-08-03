@@ -126,10 +126,10 @@ TextureImporter:
       name: Kasur-Sheet_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 22
-        width: 55
-        height: 32
+        x: 124
+        y: 213
+        width: 563
+        height: 332
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -148,10 +148,10 @@ TextureImporter:
       name: Kasur-Sheet_1
       rect:
         serializedVersion: 2
-        x: 87
-        y: 22
-        width: 67
-        height: 26
+        x: 865
+        y: 213
+        width: 680
+        height: 271
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +170,10 @@ TextureImporter:
       name: Kasur-Sheet_2
       rect:
         serializedVersion: 2
-        x: 165
-        y: 22
-        width: 71
-        height: 23
+        x: 1643
+        y: 213
+        width: 722
+        height: 243
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,10 +192,10 @@ TextureImporter:
       name: Kasur-Sheet_3
       rect:
         serializedVersion: 2
-        x: 243
-        y: 22
-        width: 75
-        height: 23
+        x: 2426
+        y: 213
+        width: 759
+        height: 243
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,10 +214,10 @@ TextureImporter:
       name: Kasur-Sheet_4
       rect:
         serializedVersion: 2
-        x: 325
-        y: 22
-        width: 71
-        height: 23
+        x: 3244
+        y: 213
+        width: 724
+        height: 243
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,10 +236,10 @@ TextureImporter:
       name: Kasur-Sheet_5
       rect:
         serializedVersion: 2
-        x: 407
-        y: 22
-        width: 67
-        height: 26
+        x: 4062
+        y: 213
+        width: 684
+        height: 271
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
