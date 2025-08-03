@@ -9,7 +9,7 @@ public class ClickedEffector : MonoBehaviour
         buttonTransform.DOKill(true);
 
         // Example of playing a sound effect. Uncomment if you have an AudioManager.
-        // AudioManager.Instance.PlaySfx("Button Click");
+        AudioManager.Instance.PlaySfx("Button Click");
 
         buttonTransform.DOPunchScale(
             punch: new Vector3(0.15f, 0.15f, 0.15f),

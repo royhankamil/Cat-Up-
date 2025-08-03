@@ -11,9 +11,6 @@ public class TutorialManager : MonoBehaviour
     [Tooltip("The parent object for the entire tutorial UI.")]
     public GameObject tutorialContainer;
 
-    [Tooltip("Assign the script that handles the button click animation.")]
-    public ClickedEffector clickEffector; // <-- Reference to your animation script
-
     [Header("Navigation Buttons")]
     [Tooltip("Assign the 'Next' button.")]
     public Button nextButton;
@@ -40,11 +37,6 @@ public class TutorialManager : MonoBehaviour
 
     public void CloseTutorial()
     {
-        // Animate, then execute logic
-        if (clickEffector != null && closeButton != null)
-        {
-            clickEffector.AnimateButtonClick(closeButton.transform);
-        }
 
         if (tutorialContainer != null)
         {
@@ -54,11 +46,6 @@ public class TutorialManager : MonoBehaviour
 
     public void Next()
     {
-        // Animate, then execute logic
-        if (clickEffector != null && nextButton != null)
-        {
-            clickEffector.AnimateButtonClick(nextButton.transform);
-        }
 
         if (currentIndex < tutorialPanels.Count - 1)
         {
@@ -70,10 +57,7 @@ public class TutorialManager : MonoBehaviour
     public void Previous()
     {
         // Animate, then execute logic
-        if (clickEffector != null && previousButton != null)
-        {
-            clickEffector.AnimateButtonClick(previousButton.transform);
-        }
+
 
         if (currentIndex > 0)
         {
