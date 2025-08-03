@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 53108832}
   - component: {fileID: 53108838}
   m_Layer: 5
-  m_Name: LoadingManager
+  m_Name: SomeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -719,13 +719,14 @@ GameObject:
   - component: {fileID: 429828951}
   - component: {fileID: 429828950}
   - component: {fileID: 429828949}
+  - component: {fileID: 429828952}
   m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &429828948
 RectTransform:
   m_ObjectHideFlags: 0
@@ -771,7 +772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
+  m_Color: {r: 0.05, g: 0.05, b: 0.05, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -796,6 +797,45 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429828947}
   m_CullTransparentMesh: 1
+--- !u!114 &429828952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429828947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b28d623b8f55842b870a6fcc938b70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topGate: {fileID: 0}
+  bottomGate: {fileID: 0}
+  animationDuration: 1
+  animationCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  deactivateOnComplete: 1
+  topGateInitialPos: {x: 0, y: 0}
+  bottomGateInitialPos: {x: 0, y: 0}
 --- !u!1 &1090460912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,7 +1413,7 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 87686749f493aab4aa1b193e922a7ff9, type: 3}
     chance: 1
-    volume: 0.4
+    volume: 2
   sceneMusicSettings:
   - sceneName: Main_Menu
     musicName: Waltz In C
@@ -1381,12 +1421,18 @@ MonoBehaviour:
   - sceneName: L1_D
     musicName: Waltz In G
     layer: 1
+  - sceneName: L1_D
+    musicName: Ambient
+    layer: 2
   - sceneName: L2_N
     musicName: Waltz In G
     layer: 1
   - sceneName: L2_N
     musicName: Ambient
     layer: 2
+  - sceneName: L3_S
+    musicName: Waltz In C
+    layer: 1
   - sceneName: L4_D
     musicName: Waltz In C
     layer: 1

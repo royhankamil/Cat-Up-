@@ -59,7 +59,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void AnimateButtonClick(Transform buttonTransform)
     {
-        //AudioManager.Instance.PlaySfx("Button Click");
+        AudioManager.Instance.PlaySfx("Button Click");
         buttonTransform.DOKill(true);
         buttonTransform.DOPunchScale(
             punch: new Vector3(0.15f, 0.15f, 0.15f),
