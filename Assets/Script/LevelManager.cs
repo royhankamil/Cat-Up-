@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
         Color disabledColor;
         ColorUtility.TryParseHtmlString("#7E7E7E", out disabledColor);
 
-        int level = PlayerPrefs.GetInt("level", 1);
+        int level = PlayerPrefs.GetInt("Level", 1);
         for (int i = 0; i < buttons.Length; i++)
         {
             if (i < level)
