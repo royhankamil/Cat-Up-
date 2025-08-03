@@ -57,7 +57,7 @@ public class SitSpot : MonoBehaviour
                 // --- MODIFIED LOGIC START ---
 
                 // Calculate the index for the next level.
-                int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+                int nextLevel = SceneManager.GetActiveScene().buildIndex;
 
                 // Get the highest level the player has already unlocked.
                 // We use a default value of 1, assuming the first level is always unlocked.
