@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2918233921107269973}
   m_Layer: 6
   m_Name: Collider (1)
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 6607549189638997394}
   m_Layer: 6
   m_Name: Grobak (1)
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 8246828452354249862}
   m_Layer: 6
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 5676086609492348893}
   m_Layer: 6
   m_Name: Grobak
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 6152726192818916042}
   m_Layer: 6
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

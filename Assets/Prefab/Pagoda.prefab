@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4696306454205822081}
   m_Layer: 6
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 202995595752031499}
   m_Layer: 6
   m_Name: Triangle
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
