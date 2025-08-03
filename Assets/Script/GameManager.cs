@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public Button playButton;
     public GameObject winUI;
     private GameObject[] OutObjects;
-    private List<Vector3> positionsObject = new List<Vector3>();
-    private List<Quaternion> rotationsObject = new List<Quaternion>();
+    // private List<Vector3> positionsObject = new List<Vector3>();
+    // private List<Quaternion> rotationsObject = new List<Quaternion>();
     // [SerializeField] private TextMeshProUGUI playText;
     // [SerializeField] private Sprite playSprite, resetSprite;
     // [SerializeField] private Image playImage;
@@ -35,18 +35,19 @@ public class GameManager : MonoBehaviour
 
     public void OnRestartBack()
     {
-        IsPlay = false;
-        // playButton.gameObject.SetActive(true);    
+        // IsPlay = false;
+        // // playButton.gameObject.SetActive(true);    
 
-        for (short i = 0; i < OutObjects.Length; i++)
-        {
-            OutObjects[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-            OutObjects[i].transform.position = positionsObject[i];
-            OutObjects[i].transform.rotation = rotationsObject[i];
-        }
-    
-        playButton.gameObject.SetActive(true);
+        // for (short i = 0; i < OutObjects.Length; i++)
+        // {
+        //     OutObjects[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        //     OutObjects[i].transform.position = positionsObject[i];
+        //     OutObjects[i].transform.rotation = rotationsObject[i];
+        // }
 
+        // playButton.gameObject.SetActive(true);
+
+        OnReset();
     }
 
     public void OnReset()
@@ -76,12 +77,12 @@ public class GameManager : MonoBehaviour
             OutObjects = GameObject.FindGameObjectsWithTag("Object");
             rigidbodies = OutObjects.Select(obj => obj.GetComponent<Rigidbody2D>()).ToList();
 
-            for (short i = 0; i < OutObjects.Length; i++)
-            {
-                Transform objTransform = OutObjects[i].transform;
-                positionsObject.Add(objTransform.position);
-                rotationsObject.Add(objTransform.rotation);
-            }
+            // for (short i = 0; i < OutObjects.Length; i++)
+            // {
+            //     Transform objTransform = OutObjects[i].transform;
+            //     positionsObject.Add(objTransform.position);
+            //     rotationsObject.Add(objTransform.rotation);
+            // }
 
             foreach (var rb in rigidbodies)
             {
