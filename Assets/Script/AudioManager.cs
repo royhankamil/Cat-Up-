@@ -295,7 +295,7 @@ public class Sound
 
     // --- NEW ---
     [Tooltip("Individual volume multiplier for this sound (0.0 to 1.0). This does not affect music.")]
-    [Range(0f, 1f)]
+    [Range(0f, 2f)]
     public float volume = 1f;
     // --- END NEW ---
 }
