@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winUI: {fileID: 0}
+  winDelay: 1.5
   floatDistance: 0.2
   floatDuration: 3
 --- !u!1 &8436287846628225183

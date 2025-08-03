@@ -8,12 +8,18 @@ public class ItemSpawner : MonoBehaviour
     public InputActionReference mouseClickAction;
     public RectTransform imageRectTransform;
     public ObjectType objectType;
-    // Public property for RotatingObject to access
     public RectTransform ImageRectTransform => imageRectTransform;
 
-    private bool isDragging = false;
+    // --- STATIC DRAG MANAGEMENT ---
+    // This static reference holds the SPECIFIC spawner instance that is currently dragging.
+    private static ItemSpawner currentlyDraggingSpawner;
+
+    // This public static property fulfills the request. It's true if ANY spawner is dragging.
+    // It's a read-only property (no 'set') to prevent other scripts from changing the drag state directly.
+    public static bool IsDragging => currentlyDraggingSpawner != null;
+
+    // --- INSTANCE-SPECIFIC VARIABLES ---
     private bool hasSpawned = false;
-    private Vector3 lastMousePosition;
     private GameObject currentItem;
     private bool imageHidden = false;
 
@@ -109,6 +115,9 @@ public class ItemSpawner : MonoBehaviour
         // --- Start Dragging ---
         if (mouseClickAction.action.WasPressedThisFrame())
         {
+            // *** CHANGE: Don't start a new drag if one is already in progress.
+            if (IsDragging) return;
+
             RectTransform selfRectTransform = transform as RectTransform;
             if (selfRectTransform == null)
             {
@@ -123,26 +132,32 @@ public class ItemSpawner : MonoBehaviour
             );
             if (isMouseOverImage)
             {
-                isDragging = true;
+                // *** CHANGE: Instead of setting a local boolean, set the static reference to THIS instance.
+                currentlyDraggingSpawner = this;
                 hasSpawned = false;
-                lastMousePosition = mouseScreenPos;
             }
         }
 
         // --- Stop Dragging ---
         if (mouseClickAction.action.WasReleasedThisFrame())
         {
-            isDragging = false;
-            hasSpawned = false; // Reset spawn state
-            if (currentItem != null)
+            // *** CHANGE: Only process release if THIS spawner is the one being dragged.
+            if (currentlyDraggingSpawner == this)
             {
-                Debug.Log("NULL CHECK INFO: Releasing reference to 'currentItem'.");
+                // *** CHANGE: Clear the static reference to stop the drag.
+                currentlyDraggingSpawner = null;
+                hasSpawned = false; // Reset spawn state
+                if (currentItem != null)
+                {
+                    Debug.Log("NULL CHECK INFO: Releasing reference to 'currentItem'.");
+                }
+                currentItem = null; // Release the item reference
             }
-            currentItem = null; // Release the item reference
         }
 
         // --- Handle All Drag Logic (Spawning and Moving) ---
-        if (isDragging)
+        // *** CHANGE: This logic now only runs for the specific spawner instance that is dragging.
+        if (currentlyDraggingSpawner == this)
         {
             // 1. Check if we need to SPAWN the item.
             if (!hasSpawned)
@@ -150,7 +165,7 @@ public class ItemSpawner : MonoBehaviour
                 if (imageRectTransform == null)
                 {
                     Debug.LogError("NULL CHECK FAILED: 'imageRectTransform' is null. Cannot check if mouse is over the image.", gameObject);
-                    isDragging = false; // Stop drag to prevent errors
+                    currentlyDraggingSpawner = null; // Stop drag to prevent errors
                     return;
                 }
 
@@ -288,7 +303,12 @@ public class ItemSpawner : MonoBehaviour
             Debug.LogWarning("NULL CHECK WARNING: An object was returned to the UI, but it was not the 'currentItem' this spawner was tracking. This might be a logic issue.");
         }
 
-        isDragging = false;
+        // *** CHANGE: Ensure we clear the static reference if this spawner's item is returned.
+        if (currentlyDraggingSpawner == this)
+        {
+            currentlyDraggingSpawner = null;
+        }
+
         hasSpawned = false;
         Debug.Log("Item returned to UI and destroyed");
     }

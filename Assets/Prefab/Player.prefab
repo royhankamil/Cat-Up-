@@ -388,7 +388,7 @@ MonoBehaviour:
     m_Bits: 72
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
-  timeToSleep: 5
+  timeToSleep: 3
   anim: {fileID: 0}
 --- !u!95 &2003153111524022354
 Animator:

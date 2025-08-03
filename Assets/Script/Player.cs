@@ -20,6 +20,10 @@ public class Player : MonoBehaviour
 
     [Header("State Timers")]
     public float timeToSleep = 2.5f;
+    // MODIFIED: Added a public string to display the formatted countdown.
+    // This value is read-only and is updated by the script.
+    [Tooltip("Time remaining until the player falls asleep.")]
+    public string sleepCountdownDisplay;
 
     // Private component references
     private Rigidbody2D rb;
@@ -34,6 +38,7 @@ public class Player : MonoBehaviour
 
     // State tracking variables
     private bool isGrounded;
+    // MODIFIED: The sitTimer is now private, as its only purpose is for internal logic.
     private float sitTimer = 0f;
 
     private void Awake()
@@ -41,15 +46,20 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        // ADDED: Initialize the display timer on start.
+        sleepCountdownDisplay = timeToSleep.ToString("F1") + "s";
     }
 
     // --- Input System Events ---
     public void OnMove(InputAction.CallbackContext context)
     {
-        // ADDED: Prevent input reading if game is not in play state
         if (!GameManager.IsPlay)
         {
-            moveInput = Vector2.zero; // Clear movement input
+            if (!ItemSpawner.IsDragging)
+            {
+                NotifyManager.Instance.TriggerNotify("Invalid Movement");
+            }
+            moveInput = Vector2.zero;
             return;
         }
         moveInput = context.ReadValue<Vector2>();
@@ -57,7 +67,6 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        // ADDED: Prevent input reading if game is not in play state
         if (!GameManager.IsPlay) return;
 
         if (context.started)
@@ -74,7 +83,6 @@ public class Player : MonoBehaviour
 
     public void OnSit(InputAction.CallbackContext context)
     {
-        // ADDED: Prevent input reading if game is not in play state
         if (!GameManager.IsPlay) return;
 
         if (context.started)
@@ -85,7 +93,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // ADDED: Game State Check. Stops animation logic.
         if (!GameManager.IsPlay) return;
 
         HandleSpriteFlip();
@@ -94,17 +101,15 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // ADDED: Game State Check. Halts all physics-based movement.
         if (!GameManager.IsPlay)
         {
-            rb.linearVelocity = Vector2.zero; // Instantly stop the player
-            anim.SetBool("isWalk", false); // Ensure walk animation is off
+            rb.linearVelocity = Vector2.zero;
+            anim.SetBool("isWalk", false);
             return;
         }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        // If sitting or sleeping, stop horizontal movement.
         if (anim.GetBool("isSit") || anim.GetBool("isSleep"))
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
@@ -121,7 +126,6 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        // Cegah nempel di dinding saat lompat dan menabrak tembok
         if (!isGrounded && IsTouchingWall())
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
@@ -135,12 +139,8 @@ public class Player : MonoBehaviour
     private void HandleRotation()
     {
         float z = transform.rotation.eulerAngles.z;
-
-        // Convert 0–360 ke -180 – 180
         if (z > 180f) z -= 360f;
-
-        z = Mathf.Clamp(z, -45f, 45f); // Batas rotasi
-
+        z = Mathf.Clamp(z, -45f, 45f);
         transform.rotation = Quaternion.Euler(0, 0, z);
     }
 
@@ -168,7 +168,6 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
-        // Consume the trigger so it only happens once per press
         jumpTriggered = false;
     }
 
@@ -191,31 +190,24 @@ public class Player : MonoBehaviour
     private void HandleAnimationsAndStates()
     {
         // --- Sit & Sleep Logic ---
-        // If 'S' was pressed, we are grounded, not moving, AND not already sitting/sleeping...
         if (sitTriggered && isGrounded && Mathf.Abs(moveInput.x) < 0.1f && !anim.GetBool("isSit"))
         {
-            // ...then we start sitting.
             anim.SetBool("isSit", true);
-            sitTimer = 0f; // Reset timer when we begin sitting.
+            sitTimer = 0f;
             AudioManager.Instance.PlaySfx("SitDown");
         }
-        // Always consume the trigger after checking it.
         sitTriggered = false;
 
-        // If we are sitting, increment the timer to eventually fall asleep.
         if (anim.GetBool("isSit"))
         {
             sitTimer += Time.deltaTime;
             if (sitTimer > timeToSleep)
             {
                 anim.SetBool("isSleep", true);
-                // We can optionally set isSit to false if sleep is a completely separate state.
-                // For now, keeping it true is fine.
             }
         }
 
         // --- Breaking Out of Sit/Sleep with Movement ---
-        // If we move or jump, we should stand up.
         bool shouldBreakSit = (Mathf.Abs(moveInput.x) > 0.1f) || (jumpTriggered && isGrounded);
         if (shouldBreakSit)
         {
@@ -228,8 +220,24 @@ public class Player : MonoBehaviour
             }
         }
 
+        // --- MODIFIED: Update the countdown display string ---
+        if (anim.GetBool("isSit") && !anim.GetBool("isSleep"))
+        {
+            // Calculate remaining time
+            float remainingTime = timeToSleep - sitTimer;
+            // Ensure the display doesn't show a negative number
+            remainingTime = Mathf.Max(0f, remainingTime);
+            // Format the string with one decimal place and "s"
+            sleepCountdownDisplay = remainingTime.ToString("F1") + "s";
+        }
+        else
+        {
+            // When not in the "sitting" countdown phase, show the full time.
+            sleepCountdownDisplay = timeToSleep.ToString("F1") + "s";
+        }
+
+
         // --- Walk, Jump, and Fall Animations ---
-        // (The rest of your method remains the same)
         anim.SetBool("isWalk", Mathf.Abs(moveInput.x) > 0.1f && isGrounded);
 
         if (!isGrounded)
