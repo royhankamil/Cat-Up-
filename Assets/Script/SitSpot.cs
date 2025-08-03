@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening; // Make sure to import the DOTween namespace
+using UnityEngine.SceneManagement;
 
 // This script now checks the Player's Animator state to trigger the win condition
 // and also makes the GameObject it's attached to float up and down.
@@ -41,19 +42,39 @@ public class SitSpot : MonoBehaviour
             .SetEase(Ease.InOutSine) // Makes the movement smooth
             .SetLoops(-1, LoopType.Yoyo); // -1 makes it loop forever, Yoyo makes it go back and forth
     }
-
     void Update()
     {
         // Step 1: Check if the player is on the spot and we haven't already won.
         if (isPlayerOnSpot && player != null && !hasWon)
         {
             // Step 2: Check the Player's animator to see if the "isSleep" boolean is true.
-            // This assumes your 'Player' script has a public Animator variable named 'anim'.
             if (player.anim.GetBool("isSleep"))
             {
                 Debug.Log("--- 'isSleep' is true! WIN CONDITION MET! ---");
 
                 hasWon = true; // Set flag to ensure this block runs only once
+
+                // --- MODIFIED LOGIC START ---
+
+                // Calculate the index for the next level.
+                int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+
+                // Get the highest level the player has already unlocked.
+                // We use a default value of 1, assuming the first level is always unlocked.
+                int highestLevelUnlocked = PlayerPrefs.GetInt("Level", 1);
+
+                // Only update PlayerPrefs if the player has just completed a NEW, higher level.
+                if (nextLevel > highestLevelUnlocked)
+                {
+                    PlayerPrefs.SetInt("Level", nextLevel);
+                    Debug.Log($"New progress saved! Unlocked Level: {nextLevel}");
+                }
+                else
+                {
+                    Debug.Log("Replaying a previously completed level. No new progress saved.");
+                }
+
+                // --- MODIFIED LOGIC END ---
 
                 // Activate Win UI
                 if (winUI != null)
@@ -71,7 +92,6 @@ public class SitSpot : MonoBehaviour
             }
         }
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
