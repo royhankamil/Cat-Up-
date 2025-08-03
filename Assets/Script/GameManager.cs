@@ -8,6 +8,7 @@ using UnityEngine.UI; // <-- Make sure you have this line
 public class GameManager : MonoBehaviour
 {
     public static bool IsPlay { get; set; } = false;
+    public Button playButton;
     public GameObject winUI;
     private GameObject[] OutObjects;
     private List<Vector3> positionsObject = new List<Vector3>();
@@ -43,6 +44,8 @@ public class GameManager : MonoBehaviour
             OutObjects[i].transform.position = positionsObject[i];
             OutObjects[i].transform.rotation = rotationsObject[i];
         }
+    
+        playButton.gameObject.SetActive(true);
 
     }
 
@@ -53,7 +56,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Modified method to accept the button that was pressed
-    public void OnPlayPress(Button playButton)
+    public void OnPlayPress()
     {
         IsPlay = !IsPlay;
         Debug.Log("IsPlay: " + IsPlay);
