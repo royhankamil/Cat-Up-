@@ -74,31 +74,6 @@ public class SitSpot : MonoBehaviour
                     Debug.Log("Replaying a previously completed level. No new progress saved.");
                 }
 
-                // --- MODIFIED LOGIC END ---
-
-                // Activate Win UI
-                if (winUI != null)
-                {
-                    winUI.SetActive(true);
-                    Debug.Log("Win UI activated.");
-
-                    // --- FANCY DOTWEEN ANIMATION ---
-                    Transform winTransform = winUI.transform;
-                    winTransform.localScale = Vector3.zero; // Mulai dari kecil
-                    winTransform.DOScale(Vector3.one, 0.5f)
-                        .SetEase(Ease.OutBack)
-                        .OnComplete(() =>
-                        {
-                            // Efek punch setelah scale in
-                            winTransform.DOPunchScale(
-                                punch: new Vector3(0.15f, 0.15f, 0.15f),
-                                duration: 0.3f,
-                                vibrato: 5,
-                                elasticity: 1);
-                        });
-                    // --- END FANCY ANIMATION ---
-                }
-
                 // Play Win Sound
                 if (AudioManager.Instance != null)
                 {

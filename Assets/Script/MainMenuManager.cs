@@ -15,7 +15,8 @@ public class MainMenuManager : MonoBehaviour
     public GameObject MainMenu;
     public GameObject SettingMenu;
     public GameObject HomeMenu; // Assumed to be the main panel within MainMenu
-    public GameObject LevelMenu; // New menu for level selection
+    public GameObject LevelMenu;
+    public GameObject CreditMenu; // --- NEW --- Reference to the credits panel
 
     [Header("Animated World Elements")]
     public Transform ground1;
@@ -26,7 +27,7 @@ public class MainMenuManager : MonoBehaviour
     // The currently active transition sequence.
     private Sequence currentSequence;
 
-    // --- NEW: Variables to store the original positions ---
+    // Variables to store the original positions
     private Vector3 ground1InitialPos;
     private Vector3 ground2InitialPos;
 
@@ -35,13 +36,14 @@ public class MainMenuManager : MonoBehaviour
         // Initialize DOTween
         DOTween.Init();
 
-        // --- NEW: Record the initial positions here ---
+        // Record the initial positions here
         if (ground1 != null) ground1InitialPos = ground1.localPosition;
         if (ground2 != null) ground2InitialPos = ground2.localPosition;
 
         // Ensure all menu GameObjects have a CanvasGroup for fading animations.
         // This is a good practice for robustness.
-        foreach (var menu in new[] { StartMenu, MainMenu, SettingMenu, HomeMenu, LevelMenu })
+        // --- NEW: Added CreditMenu to the loop ---
+        foreach (var menu in new[] { StartMenu, MainMenu, SettingMenu, HomeMenu, LevelMenu, CreditMenu })
         {
             if (menu != null && menu.GetComponent<CanvasGroup>() == null)
             {
@@ -57,7 +59,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void AnimateButtonClick(Transform buttonTransform)
     {
-        AudioManager.Instance.PlaySfx("Button Click");
+        //AudioManager.Instance.PlaySfx("Button Click");
         buttonTransform.DOKill(true);
         buttonTransform.DOPunchScale(
             punch: new Vector3(0.15f, 0.15f, 0.15f),
@@ -84,7 +86,7 @@ public class MainMenuManager : MonoBehaviour
                 MainMenu.SetActive(true);
             })
             .Append(MainMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.5f).From(0f))
-            // --- MODIFIED: Use the stored initial positions ---
+            // Use the stored initial positions
             .Join(ground1.DOLocalMove(ground1InitialPos, 2f).From(ground1InitialPos - new Vector3(0, 200, 0)).SetEase(Ease.OutCubic))
             .Join(ground2.DOLocalMove(ground2InitialPos, 1f).From(ground2InitialPos - new Vector3(0, 200, 0)).SetEase(Ease.OutCubic))
             .OnComplete(() =>
@@ -199,6 +201,67 @@ public class MainMenuManager : MonoBehaviour
             });
     }
 
+    // --- NEW METHOD: GoToCreditScene ---
+    /// <summary>
+    /// Fades out the Home menu and fades in the Credit menu.
+    /// </summary>
+    public void GoToCreditScene()
+    {
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
+
+        AnimateButtonClick(clickedButton.transform);
+
+        currentSequence?.Kill();
+        currentSequence = DOTween.Sequence();
+
+        currentSequence
+            .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
+            .AppendCallback(() =>
+            {
+                HomeMenu.SetActive(false);
+                CreditMenu.SetActive(true);
+                CreditMenu.GetComponent<CanvasGroup>().alpha = 0;
+            })
+            .Append(CreditMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f))
+            .OnComplete(() =>
+            {
+                lastClickedButton = null;
+            });
+    }
+
+    // --- NEW METHOD: GoToHomeFromCreditScene ---
+    /// <summary>
+    /// Fades out the Credit menu and fades in the Home menu.
+    /// </summary>
+    public void GoToHomeFromCreditScene()
+    {
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (lastClickedButton == clickedButton) return;
+        lastClickedButton = clickedButton;
+
+        AnimateButtonClick(clickedButton.transform);
+
+        currentSequence?.Kill();
+        currentSequence = DOTween.Sequence();
+
+        currentSequence
+            .Append(CreditMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.25f))
+            .AppendCallback(() =>
+            {
+                CreditMenu.SetActive(false);
+                HomeMenu.SetActive(true);
+                HomeMenu.GetComponent<CanvasGroup>().alpha = 0;
+            })
+            .Append(HomeMenu.GetComponent<CanvasGroup>().DOFade(1f, 0.25f))
+            .OnComplete(() =>
+            {
+                lastClickedButton = null;
+            });
+    }
+
+
     public void StartLevel(int levelIndex)
     {
         if (lastClickedButton != null) return;
@@ -222,7 +285,7 @@ public class MainMenuManager : MonoBehaviour
 
         currentSequence
             .Append(MainMenu.GetComponent<CanvasGroup>().DOFade(0f, 0.5f))
-            // --- MODIFIED: Use the stored initial positions ---
+            // Use the stored initial positions
             .Join(ground1.DOLocalMove(ground1InitialPos - new Vector3(0, 200, 0), 0.5f).SetEase(Ease.InCubic))
             .Join(ground2.DOLocalMove(ground2InitialPos - new Vector3(0, 200, 0), 0.5f).SetEase(Ease.InCubic))
             .AppendCallback(() =>
@@ -232,6 +295,8 @@ public class MainMenuManager : MonoBehaviour
                 HomeMenu.GetComponent<CanvasGroup>().alpha = 1f;
                 SettingMenu.SetActive(false);
                 LevelMenu.SetActive(false);
+                // --- NEW: Also ensure CreditMenu is disabled on return ---
+                CreditMenu.SetActive(false);
                 StartMenu.SetActive(true);
                 StartMenu.GetComponent<CanvasGroup>().alpha = 0;
             })
