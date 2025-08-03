@@ -77,6 +77,7 @@ public class SitSpot : MonoBehaviour
                 // Play Win Sound
                 if (AudioManager.Instance != null)
                 {
+                    winUI.SetActive(true);
                     AudioManager.Instance.PlaySfx("Win");
                     Debug.Log("Playing 'Win' sound effect.");
                 }

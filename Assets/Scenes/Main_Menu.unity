@@ -3119,7 +3119,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2084235856}
         m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: GoToHomeFromLevel
+        m_MethodName: GoToHomeFromCreditScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4382,6 +4382,7 @@ MonoBehaviour:
   SettingMenu: {fileID: 1592192294}
   HomeMenu: {fileID: 309642635}
   LevelMenu: {fileID: 685274409}
+  CreditMenu: {fileID: 441772889}
   ground1: {fileID: 345356344}
   ground2: {fileID: 1801022935}
 --- !u!1 &2116318941
