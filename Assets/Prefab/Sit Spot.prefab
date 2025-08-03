@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3181713537190070187}
   - component: {fileID: 865923481519280889}
   - component: {fileID: 2281847065421716177}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sit Spot
   m_TagString: Kasur
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 4681132588718749820}
   - component: {fileID: 4892195952232122014}
   - component: {fileID: 1282820976799476627}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
