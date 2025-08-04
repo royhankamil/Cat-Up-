@@ -71,10 +71,10 @@ public class RotatingObject : MonoBehaviour
         if (GameManager.IsPlay)
         {
             GetComponent<Rigidbody2D>().mass = mass;
-            if (gameObject.layer == LayerMask.NameToLayer("DraggingItem"))
-            {
-                gameObject.layer = LayerMask.NameToLayer("Item");
-            }
+            // if (gameObject.layer == LayerMask.NameToLayer("DraggingItem"))
+            // {
+            //     gameObject.layer = LayerMask.NameToLayer("Item");
+            // }
             return;
         }
 
@@ -94,7 +94,7 @@ public class RotatingObject : MonoBehaviour
                 offset = transform.position - mouseWorldPos;
                 // Set the initial target position to prevent snapping
                 targetPosition = transform.position;
-                gameObject.layer = LayerMask.NameToLayer("DraggingItem");
+                // gameObject.layer = LayerMask.NameToLayer("DraggingItem");
             }
         }
 
@@ -104,7 +104,7 @@ public class RotatingObject : MonoBehaviour
             if (isDragging) // Only change layer if it was being dragged
             {
                 isDragging = false;
-                gameObject.layer = LayerMask.NameToLayer("Item");
+                // gameObject.layer = LayerMask.NameToLayer("Item");
             }
         }
 
