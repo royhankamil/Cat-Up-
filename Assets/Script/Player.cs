@@ -101,18 +101,31 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // --- PAUSED STATE LOGIC ---
         if (!GameManager.IsPlay)
         {
+            // MODIFIED: Change the body type to Kinematic.
+            // This makes the Rigidbody ignore all external physics forces (like being pushed).
+            rb.bodyType = RigidbodyType2D.Kinematic;
+
+            // It's also good practice to zero out velocity and stop animations.
             rb.linearVelocity = Vector2.zero;
             anim.SetBool("isWalk", false);
-            return;
+            return; // Exit the function early.
         }
 
+        // --- ACTIVE PLAY LOGIC ---
+
+        // MODIFIED: Ensure the body type is set back to Dynamic when IsPlay is true.
+        // This allows physics forces (gravity, movement, etc.) to affect the player again.
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        // The rest of your original logic remains the same.
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         if (anim.GetBool("isSit") || anim.GetBool("isSleep"))
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // Use rb.velocity for consistency
             return;
         }
 
